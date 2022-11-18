@@ -1,9 +1,12 @@
 from flask import Flask
-app = Flask(__name__)
+from flask_restful import Api
 
-@app.route('/')
-def hello_world():
-   return "Hello, World!"
+from resources.submissions import Submissions
+
+app = Flask(__name__)
+api = Api(app)
+
+api.add_resource(Submissions, '/submissions')
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port=5000)
