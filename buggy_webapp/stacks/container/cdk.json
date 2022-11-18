@@ -5,7 +5,7 @@
             "dev": {
                 "region": "us-east-1",
                 "account": "575101084097",
-                "name": "buggy-api"
+                "name": "buggy-webapp"
             }
         }
     }
