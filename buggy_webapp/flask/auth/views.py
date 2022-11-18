@@ -17,7 +17,10 @@ def login_post():
 
     login_user(user, remember=True)
 
-    return redirect(url_for('main.home'))
+    up_next = request.args.get('next')
+    up_next = up_next if up_next else url_for('main.home')
+
+    return redirect(up_next)
 
 @auth.route('/logout', methods=['GET'])
 @login_required
