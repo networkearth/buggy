@@ -13,7 +13,7 @@ def create_app():
     bootstrap.init_app(app)
 
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
+    login_manager.login_view = 'auth.login_view'
     login_manager.init_app(app)
 
     from .auth import auth as auth_blueprint
