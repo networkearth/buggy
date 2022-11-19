@@ -23,7 +23,13 @@ def submissions_view():
         'submissions'
     ])
     response = requests.get(api_url, json=payload)
-    return render_template('submissions.html')
+    submission_data = {}
+    for submission in response.json():
+        submission_data[submission['instance']] = {
+            'uid': current_app.config['KOBO_UID'],
+            'images': submission['images']
+        }
+    return render_template('submissions.html', submission_data=submission_data)
 
 @main.route('/submissions', methods=['POST'])
 @login_required

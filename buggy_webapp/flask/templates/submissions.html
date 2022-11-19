@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<h1>Welcome to Buggy! These will be your submissions.</h1>
+<form method="POST">
+    <div class="row">
+        {% for instance in submission_data %}
+        <div class="col-md-1" style="margin: 20px">
+            <div class="form-check">
+                <img src="/image/{{ instance }}/{{ submission_data[instance]['images'][0] }}" class="rounded float-left" style="height: 100px">
+                <br>
+                <input class="form-check-input" type="checkbox" value="{{ instance }}" id="flexCheckChecked" checked>
+                <label class="form-check-label" for="flexCheckChecked">
+                {{ instance }}
+                </label>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</form>
 {% endblock %}
