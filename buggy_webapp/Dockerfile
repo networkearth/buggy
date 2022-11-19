@@ -29,5 +29,11 @@ RUN pip3 install -r requirements.txt
 # Copy the app to the working directory
 COPY flask .
 
+ARG KOBO_USERNAME
+ENV KOBO_USERNAME=$KOBO_USERNAME
+
+ARG KOBO_PASSWORD
+ENV KOBO_PASSWORD=$KOBO_PASSWORD
+
 # Specify the command to run on container start
 CMD [ "/bin/bash", "./run.sh" ]

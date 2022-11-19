@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -9,6 +11,10 @@ def create_app():
 
     # used by flask-login
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
+    app.config['API_URL'] = 'http://host.docker.internal:5000'
+    app.config['KOBO_UID'] = 'aMY6fQPkiQrzkSgq5G6gSC'
+    app.config['KOBO_PASSWORD'] = os.environ['KOBO_PASSWORD']
+    app.config['KOBO_USERNAME'] = os.environ['KOBO_USERNAME']
 
     bootstrap.init_app(app)
 
