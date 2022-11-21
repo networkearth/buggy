@@ -1,0 +1,17 @@
+{
+    "app": "synth_batch_job",
+    "context": {
+        "environments": {
+            "buggy_dev": {
+                "namespace": "buggy",
+                "stage": "dev",
+                "region": "us-east-1",
+                "account": "575101084097",
+                "memory": "1024",
+                "vcpu": "1",
+                "job_name": "push-to-inat",
+                "execution_role": "ambit-dev-buggy-push-to-inat-role"
+            }
+        }
+    }
+}
