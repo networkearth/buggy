@@ -15,6 +15,7 @@ setup(
         'console_scripts': [
             'synth_batch_job = buggy_deployer.jobs.app:main',
             'deploy_batch_job = buggy_deployer.jobs.deploy:main',
+            'run_job_tests = aqueduct.jobs.run_job_tests:main',
         ]
     }
 )
