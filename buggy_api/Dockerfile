@@ -29,5 +29,14 @@ RUN pip3 install -r requirements.txt
 # Copy the app to the working directory
 COPY flask .
 
+ARG AWS_ACCESS_KEY_ID
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+
+ARG AWS_SECRET_ACCESS_KEY
+ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
+ARG AWS_DEFAULT_REGION
+ENV AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+
 # Specify the command to run on container start
 CMD [ "python3", "./app.py" ]

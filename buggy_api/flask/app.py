@@ -8,6 +8,8 @@ from resources.jobs import Job
 app = Flask(__name__)
 api = Api(app)
 
+app.config['JOB_BUCKET'] = 'buggy-job-bucket'
+
 api.add_resource(Submissions, '/submissions')
 api.add_resource(Image, '/image')
 api.add_resource(Job, '/job')

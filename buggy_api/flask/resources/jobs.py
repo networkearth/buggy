@@ -1,5 +1,7 @@
 import json
+import boto3
 
+from flask import current_app
 from flask_restful import Resource, reqparse
 from time import time
 
@@ -44,7 +46,7 @@ class Job(Resource):
 
     def post(self):
         kwargs = Job.parser.parse_args()
-        directory = f'{kwargs["inaturalist_email"]}-{int(time())}'
+        key = f'{kwargs["inaturalist_email"]}-{int(time())}.json'
         data = {
             'instances': [
                 int(instance.strip()) 
@@ -57,4 +59,11 @@ class Job(Resource):
             'kobo_password': kwargs['kobo_password'],
             'kobo_uid': kwargs['kobo_uid']
         }
+
+        s3 = boto3.client('s3')
+        s3.put_object(
+            Body=json.dumps(data, indent=4, sort_keys=True),
+            Bucket=current_app.config['JOB_BUCKET'],
+            Key=key
+        )
         return {}, 201
