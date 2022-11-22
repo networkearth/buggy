@@ -100,3 +100,26 @@ then run
 ```bash
 rake es:rebuild
 ```
+
+Setup node:
+```bash
+nvm install 
+npm install
+npm run webpack 
+```
+
+Now let's seed some data in the site
+```bash
+rails r "Site.create( name: 'iNaturalist', url: 'http://localhost:3000' )"
+rake inaturalist:generate_translations_js
+rails r tools/load_iconic_taxa.rb
+```
+
+You'll get lots of translation warning messages, but no need to worry.
+
+Add the following to the end of `config/environments/development.rb`:
+```bash
+config.hosts << "host.docker.internal"
+config.hosts << "ec2-3-83-47-52.compute-1.amazonaws.com"
+```
+Note that you'll need to grab the appropriate hostname from the aws console
