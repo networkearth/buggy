@@ -123,3 +123,34 @@ config.hosts << "host.docker.internal"
 config.hosts << "ec2-3-83-47-52.compute-1.amazonaws.com"
 ```
 Note that you'll need to grab the appropriate hostname from the aws console
+
+Test it out with
+```bash
+rails s -b 0.0.0.0
+```
+
+Now go ahead and shut down the rails app and then before exiting the container let's save all that work we did:
+```bash
+docker commit inaturalist_webapp_base_container inaturalist_webapp_updated/latest
+```
+
+Most of what we just did to the supporting containers shows up in their respective data volumes. So if we're going to keep those around we need to tar those up and commit them to git. Specifically the volumes are in the `~/inaturalist_volumes` directory. So once you've shut down the services (so nothing's being updated while you tar things up) you can go ahead and run:
+
+```bash
+cd ~/
+tar -czf inaturalist_volumes.tar.gz inaturalist_volumes
+```
+
+Then move the tar into this repository and commit it. 
+
+We've got a container with everything in it, but now we need to build an image that will actuall start our app for us. From within the `webapp` directory of `dockerized_inaturalist` run:
+
+```bash
+docker build -t inaturalist_webapp/latest -f DockerfileFinal .
+```
+
+You can test the image with:
+
+```bash
+docker run --add-host=host.docker.internal:host-gateway -p 3000:3000 inaturalist_webapp/latest
+```
