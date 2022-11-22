@@ -11,7 +11,7 @@
 
 ## Building iNaturalist
 
-### Building the Webapp
+### Building the Webapp and Services
 
 Start by building the base image we'll use for the webapp. So go to the `webapp` folder and run:
 
@@ -153,4 +153,48 @@ You can test the image with:
 
 ```bash
 docker run --add-host=host.docker.internal:host-gateway -p 3000:3000 inaturalist_webapp/latest
+```
+
+### Building the API
+From within the `api` directory run:
+
+```bash
+docker build -t inaturalist_api_base/latest -f DockerfileBase .
+```
+
+Start up the base container with:
+
+```bash
+docker run --rm --add-host=host.docker.internal:host-gateway --name inaturalist_api_base_container -p 4000:4000 -it inaturalist_api_base/latest
+```
+
+Update the hosts in `config.js` to point to `host.docker.internal` for all the services and the webapp. Also change the DB password to be `password` and user to be `username`. You'll also need to add an `http://` in front of the hostname for elasticsearch. 
+
+Setup Node
+```bash
+nvm install
+npm install
+```
+
+You can try it out by running:
+```bash
+node app.js
+```
+
+Now before exiting from the container let's save our work
+
+```bash
+docker commit inaturalist_api_base_container inaturalist_api_updated/latest
+```
+
+Okay now we can build and try out the real image:
+
+```bash
+docker build -t inaturalist_api/latest -f DockerfileFinal .
+```
+
+You can test the image with:
+
+```bash
+docker run --add-host=host.docker.internal:host-gateway -p 4000:4000 inaturalist_api/latest
 ```
