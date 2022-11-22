@@ -1,0 +1,14 @@
+{
+    "app": "python3 app.py",
+    "context": {
+        "environments": {
+            "dev": {
+                "region": "us-east-1",
+                "account": "575101084097",
+                "name": "inaturalist",
+                "instance_type": "c5.xlarge",
+                "volume": 50
+            }
+        }
+    }
+}
