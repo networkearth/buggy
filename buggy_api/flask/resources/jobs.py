@@ -38,6 +38,18 @@ class Job(Resource):
         help='iNaturalist password'
     )
     parser.add_argument(
+        'client_id',
+        type=str,
+        required=True,
+        help='client_id'
+    )
+    parser.add_argument(
+        'client_secret',
+        type=str,
+        required=True,
+        help='client_secret'
+    )
+    parser.add_argument(
         'instances',
         type=str,
         required=True,
@@ -55,6 +67,8 @@ class Job(Resource):
             ],
             'inaturalist_email': kwargs['inaturalist_email'],
             'inaturalist_password': kwargs['inaturalist_password'],
+            'client_id': kwargs['client_id'],
+            'client_secret': kwargs['client_secret'],
             'kobo_username': kwargs['kobo_username'],
             'kobo_password': kwargs['kobo_password'],
             'kobo_uid': kwargs['kobo_uid']

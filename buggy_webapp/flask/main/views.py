@@ -40,6 +40,8 @@ def submissions_post():
         'kobo_uid': current_app.config['KOBO_UID'],
         'inaturalist_email': current_user.email,
         'inaturalist_password': current_user.password,
+        'client_id': current_app.config['INATURALIST_APP_ID'],
+        'client_secret': current_app.config['INATURALIST_APP_SECRET'],
         'instances': ','.join(sorted(request.form))
     }
     api_url = '/'.join([
