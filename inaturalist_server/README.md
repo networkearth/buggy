@@ -3,11 +3,12 @@
 ## Setting up the EC2
 1. Create a key pair called `inaturalist`
 2. Build the EC2 by going into the `stack` folder and running `cdk deploy --profile deployer`
-3. SSH into the EC2
-4. Setup GIT 
-5. Pull this repository into the EC2
-6. Install docker https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04 (note that you want to follow the instructions to not need to use `sudo` as well https://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo)
-7. Install docker-compose https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+3. You're going to want to setup an elastic ip so you can shut down the instance without the ip switching
+4. SSH into the EC2
+5. Setup GIT 
+6. Pull this repository into the EC2
+7. Install docker https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04 (note that you want to follow the instructions to not need to use `sudo` as well https://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo)
+8. Install docker-compose https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 
 ## Building iNaturalist
 
@@ -120,13 +121,52 @@ You'll get lots of translation warning messages, but no need to worry.
 Add the following to the end of `config/environments/development.rb`:
 ```bash
 config.hosts << "host.docker.internal"
-config.hosts << "ec2-3-83-47-52.compute-1.amazonaws.com"
+config.hosts << ""
 ```
-Note that you'll need to grab the appropriate hostname from the aws console
+Note that you'll need to grab the appropriate elastic ip from the aws console
 
 Test it out with
 ```bash
 rails s -b 0.0.0.0
+```
+
+Okay before we leave here let's just go ahead and create a fake user or two as well as a fake oauth application:
+
+Create a `tools/create_users_and_app.rb` file:
+```ruby
+opts = {
+    :login => 'john',
+    :email => 'john@example.com',
+    :password => 'password123',
+    :password_confirmation => 'password123'
+}
+u = User.new(opts)
+u.save
+u
+
+opts = {
+    :login => 'jill',
+    :email => 'jill@example.com',
+    :password => 'password123',
+    :password_confirmation => 'password123'
+}
+u = User.new(opts)
+u.save
+u
+
+opts = {
+    :name => 'buggy',
+    :redirect_uri => 'http://localhost:5000'
+}
+app = OauthApplication.new(opts)
+app.save
+app
+```
+
+and then run it with: 
+```bash
+chmod 777 tools/create_users_and_app.rb
+rails tools/create_users_and_app.rb
 ```
 
 Now go ahead and shut down the rails app and then before exiting the container let's save all that work we did:
