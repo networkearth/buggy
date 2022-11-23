@@ -162,7 +162,6 @@ OBSERVATION_FIELD_TRANSFORMERS = [
     development_transform,
     activity_transform,
     host_phenology_transform,
-    effort_transform,
     quantity_transform,
     length_transform,
     wetness_transform,

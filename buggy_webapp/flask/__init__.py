@@ -11,8 +11,8 @@ def create_app():
 
     # used by flask-login
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['API_URL'] = 'http://host.docker.internal:5000'
-    app.config['KOBO_UID'] = 'aMY6fQPkiQrzkSgq5G6gSC'
+    app.config['API_URL'] = 'http://host.docker.internal:5002'
+    app.config['KOBO_UID'] = 'aQ8wN2wgWtJzZphAkYD7eP' #'aMY6fQPkiQrzkSgq5G6gSC'
     app.config['KOBO_PASSWORD'] = os.environ['KOBO_PASSWORD']
     app.config['KOBO_USERNAME'] = os.environ['KOBO_USERNAME']
     app.config['INATURALIST_API_URL'] = 'http://44.212.148.112:4000/v1'
