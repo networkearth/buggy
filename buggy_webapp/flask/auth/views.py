@@ -1,5 +1,8 @@
-from flask import redirect, render_template, url_for, request
+from flask import redirect, render_template, url_for, request, current_app, flash
 from flask_login import login_user, logout_user, login_required
+
+from gluon.inaturalist.client import iNaturalistClient
+
 from . import auth
 
 from ..models import User
@@ -13,14 +16,32 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User(f'{email} {password}')
+    login_succeeded = True
+    try:
+        client = iNaturalistClient(
+            email, 
+            password,
+            current_app.config['INATURALIST_APP_ID'],
+            current_app.config['INATURALIST_APP_SECRET'],
+            api_url=current_app.config['INATURALIST_API_URL'],
+            app_url=current_app.config['INATURALIST_APP_URL']
+        )
+        client._get_new_token()
+    except Exception:
+        login_succeeded = False
 
-    login_user(user, remember=True)
+    if login_succeeded:
+        user = User(f'{email} {password}')
 
-    up_next = request.args.get('next')
-    up_next = up_next if up_next else url_for('main.home')
+        login_user(user, remember=True)
 
-    return redirect(up_next)
+        up_next = request.args.get('next')
+        up_next = up_next if up_next else url_for('main.home')
+
+        return redirect(up_next)
+    else:
+        flash('Incorrect credentials')
+        return redirect(url_for('auth.login_view'))
 
 @auth.route('/logout', methods=['GET'])
 @login_required

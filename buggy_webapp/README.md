@@ -6,7 +6,7 @@ docker push 575101084097.dkr.ecr.us-east-1.amazonaws.com/buggy-webapp:latest;
 ```
 
 ```bash
-buggy_webapp % docker build --platform linux/amd64 --build-arg KOBO_USERNAME=$KOBO_USERNAME --build-arg KOBO_PASSWORD=$KOBO_PASSWORD -t buggy-webapp .
+docker build --platform linux/amd64 --build-arg KOBO_USERNAME=$KOBO_USERNAME --build-arg KOBO_PASSWORD=$KOBO_PASSWORD -t buggy-webapp .
 
 docker run -p 5001:5001 -it buggy-webapp
 ```
