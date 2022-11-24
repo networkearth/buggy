@@ -4,6 +4,8 @@ from aws_cdk import (
     Stack
 )
 
+# https://stackoverflow.com/questions/72645571/aws-batch-timeout-connecting-to-ecr
+
 from constructs import Construct
 
 def prefix(conf):
@@ -36,6 +38,9 @@ class BatchJobStack(Stack):
             job_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['execution_role']}",
             fargate_platform_configuration=batch.CfnJobDefinition.FargatePlatformConfigurationProperty(
                 platform_version="1.4.0"
+            ),
+            network_configuration=batch.CfnJobDefinition.NetworkConfigurationProperty(
+                assign_public_ip="ENABLED"
             )
         )
 

@@ -80,4 +80,29 @@ class Job(Resource):
             Bucket=current_app.config['JOB_BUCKET'],
             Key=key
         )
+
+        email = kwargs['inaturalist_email']
+        batch = boto3.client('batch')
+        batch.submit_job(
+            jobQueue='arn:aws:batch:us-east-1:575101084097:job-queue/buggy',
+            jobName=f'pushtoinat',
+            jobDefinition='arn:aws:batch:us-east-1:575101084097:job-definition/buggy-dev-push-to-inat',
+            containerOverrides={
+                'command': [
+                    '-e',
+                    email,
+                    '-b',
+                    current_app.config['JOB_BUCKET'],
+                    '-a',
+                    'http://buggy-api-service-791649285.us-east-1.elb.amazonaws.com',
+                    '-ia',
+                    'http://44.212.148.112:4000/v1',
+                    '-iw',
+                    'http://44.212.148.112:3000',
+                    '-r',
+                    'us-east-1'
+                ]
+            }
+        )
+
         return {}, 201

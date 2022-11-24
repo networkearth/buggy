@@ -7,10 +7,10 @@
                 "stage": "dev",
                 "region": "us-east-1",
                 "account": "575101084097",
-                "memory": "1024",
+                "memory": "2048",
                 "vcpu": "1",
                 "job_name": "push-to-inat",
-                "execution_role": "buggy-dev-push-to-inat-role"
+                "execution_role": "push-to-inat"
             }
         }
     }

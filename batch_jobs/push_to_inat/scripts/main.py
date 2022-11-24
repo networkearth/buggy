@@ -38,7 +38,9 @@ def main(email, bucket, api_url, inat_api, inat_webapp, region):
 
     instances = set()
 
+    objects_to_delete = []
     for object in objects:
+        objects_to_delete.append(object)
         content = json.loads(object.get()['Body'].read().decode('utf-8'))
         kobo_username = content['kobo_username']
         kobo_password = content['kobo_password']
@@ -103,6 +105,9 @@ def main(email, bucket, api_url, inat_api, inat_webapp, region):
             inaturalist_client.attach_observation_field(
                 observation_id, int(field_id), value
             )
+
+    for object in objects_to_delete:
+        object.delete()
 
 if __name__ == '__main__':
     main()

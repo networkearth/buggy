@@ -21,7 +21,7 @@ def main(env):
         conf = json.load(fh)["context"]["environments"][env]
 
     print("Logging Into Docker Hub")
-    cmd = f"aws ecr get-login-password --region {conf['region']} | sudo docker login --username AWS --password-stdin {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com"
+    cmd = f"aws ecr get-login-password --region {conf['region']} | docker login --username AWS --password-stdin {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com"
     run_command(cmd)
 
     print("Building Container...")

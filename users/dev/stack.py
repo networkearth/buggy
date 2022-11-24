@@ -26,3 +26,28 @@ class UserStack(Stack):
             self, bucket_name, bucket_name=bucket_name
         )
         bucket.grant_read_write(group)
+
+        group.add_to_policy(
+            iam.PolicyStatement(
+                principals=[],
+                actions=[
+                    "batch:SubmitJob"
+                ],
+                resources=[
+                    '*'
+                ]
+            )
+        )
+
+        #group.add_to_policy(
+        #    iam.PolicyStatement(
+        #        principals=[],
+        #        actions=[
+        #            "iam:GetRole",
+        #            "iam:PassRole"
+        #        ],
+        #        resources=[
+        #            '*'
+        #        ]
+        #    )
+        #)
