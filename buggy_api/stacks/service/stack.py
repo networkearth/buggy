@@ -24,7 +24,7 @@ class ServiceStack(Stack):
                     ),
                     tag='latest',
                 ),
-                container_port=5000
+                container_port=5002
             ),
             load_balancer_name=service_name,
             assign_public_ip=True

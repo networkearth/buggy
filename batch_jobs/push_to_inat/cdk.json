@@ -10,7 +10,7 @@
                 "memory": "1024",
                 "vcpu": "1",
                 "job_name": "push-to-inat",
-                "execution_role": "ambit-dev-buggy-push-to-inat-role"
+                "execution_role": "buggy-dev-push-to-inat-role"
             }
         }
     }

@@ -25,13 +25,13 @@ def main(env):
     run_command(cmd)
 
     print("Building Container...")
-    cmd = f"sudo docker build -f Dockerfile -t {prefix(conf)}-{conf['job_name']} ."
+    cmd = f"docker build --platform linux/amd64 -f Dockerfile -t {prefix(conf)}-{conf['job_name']} ."
     run_command(cmd)
 
     print("Tagging Container...")
-    cmd = f"sudo docker tag {prefix(conf)}-{conf['job_name']}:latest {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{prefix(conf)}-{conf['job_name']}:latest"
+    cmd = f"docker tag {prefix(conf)}-{conf['job_name']}:latest {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{prefix(conf)}-{conf['job_name']}:latest"
     run_command(cmd)
 
     print("Pushing Container...")
-    cmd = f"sudo docker push {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{prefix(conf)}-{conf['job_name']}:latest"
+    cmd = f"docker push {conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{prefix(conf)}-{conf['job_name']}:latest"
     run_command(cmd)

@@ -11,18 +11,14 @@ def run_command(cmd):
         print(process.stdout.read().decode('utf-8'))
 
 @click.command()
-@click.option("-e", "--env", required=False, default="ambit_dev")
+@click.option("-e", "--env", required=False, default="buggy_dev")
 def main(env):
-    print("Running Prep")
-    cmd = "./prep.sh"
-    run_command(cmd)
-
     with open("cdk.json", "r") as fh:
         conf = json.load(fh)["context"]["environments"][env]
 
     container_name = '-'.join([prefix(conf), conf['job_name']])
     print("Building Container...")
-    cmd = f"sudo docker build -f Dockerfile -t {container_name} ."
+    cmd = f"docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION --platform linux/amd64 -f Dockerfile -t {container_name} ."
     run_command(cmd)
 
     region = conf['region']

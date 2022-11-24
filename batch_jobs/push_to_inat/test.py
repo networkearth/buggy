@@ -1,10 +1,5 @@
-import os
 import click
-import boto3
-import json
-import pandas as pd
 
-from time import time
 from subprocess import Popen, PIPE, STDOUT
 
 @click.command()
@@ -12,7 +7,12 @@ from subprocess import Popen, PIPE, STDOUT
 @click.option('-r', '--region', required=True, help='the aws region')
 def main(container, region):
     
-    cmd = f'sudo docker run {container} {partition} {environment} {carriers_table} {contour_info_table} {bucket} {region}'
+    email = 'john@example.com'
+    bucket = 'buggy-job-bucket'
+    api_url = 'http://buggy-api-service-791649285.us-east-1.elb.amazonaws.com'
+    inat_api = 'http://44.212.148.112:4000/v1'
+    inat_webapp = 'http://44.212.148.112:3000'
+    cmd = f'docker run {container} -e {email} -b {bucket} -a {api_url} -ia {inat_api} -iw {inat_webapp} -r {region}'
     print('running:', cmd)
     with Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT) as process:
         print(process.stdout.read().decode('utf-8'))

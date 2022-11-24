@@ -2,6 +2,15 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ARG AWS_ACCESS_KEY_ID
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+
+ARG AWS_SECRET_ACCESS_KEY
+ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
+ARG AWS_DEFAULT_REGION
+ENV AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+
 RUN apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y install build-essential
@@ -14,9 +23,6 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
 
 # add git, vim and curl
 RUN apt-get -y install git
-
-# By default, listen on port 5000
-EXPOSE 5000/tcp
 
 # Set the working directory in the container
 WORKDIR /app
