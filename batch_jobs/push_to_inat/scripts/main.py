@@ -24,11 +24,12 @@ def get_submissions(api_url, username, password, uid, email):
 @click.command()
 @click.option('-e', '--email', required=True, help='email to do uploads for')
 @click.option('-b', '--bucket', required=True, help='bucket to look for jobs in')
+@click.option('-bb', '--backup_bucket', required=True, help='bucket to backup kobo records to')
 @click.option('-a', '--api_url', required=True, help='api endpoint')
 @click.option('-ia', '--inat_api', required=True, help='inat api url')
 @click.option('-iw', '--inat_webapp', required=True, help='inat webapp url')
 @click.option('-r', '--region', required=True, help='aws region')
-def main(email, bucket, api_url, inat_api, inat_webapp, region):
+def main(email, bucket, backup_bucket, api_url, inat_api, inat_webapp, region):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucket)
 
@@ -70,6 +71,7 @@ def main(email, bucket, api_url, inat_api, inat_webapp, region):
         app_url=inat_webapp
     )
 
+    s3 = boto3.client('s3')
     for record in submissions:
         #if not record['is_valid']: continue
 
@@ -85,19 +87,33 @@ def main(email, bucket, api_url, inat_api, inat_webapp, region):
         
         # upload the base observation
         observation_id = inaturalist_client.upload_base_observation(
-            record['taxa'], 
-            record['longitude'], 
-            record['latitude'], 
-            record['ts'], 
-            record['positional_accuracy'], 
+            record['taxa'],
+            record['longitude'],
+            record['latitude'],
+            record['ts'],
+            record['positional_accuracy'],
             record['notes']
         )
 
-        # attach the images
+        # backup the record
+        kobo_record = kobo_client.pull_instance(kobo_uid, instance)
+        s3.put_object(
+            Body=json.dumps(kobo_record, indent=4, sort_keys=True),
+            Bucket=backup_bucket,
+            Key='/'.join([str(kobo_uid), str(instance) + '.json'])
+        )
+
+        # attach and backup the images
         for image_path in image_paths:
             inaturalist_client.attach_image(
                 observation_id, image_path
             )
+            with open(image_path, 'rb') as fh:
+                s3.put_object(
+                    Body=fh.read(),
+                    Bucket=backup_bucket,
+                    Key='/'.join([str(kobo_uid), str(instance), image_path.split('_')[-1] + '.jpg'])
+                )
             os.remove(image_path)
 
         # attach the observation field values
@@ -105,6 +121,9 @@ def main(email, bucket, api_url, inat_api, inat_webapp, region):
             inaturalist_client.attach_observation_field(
                 observation_id, int(field_id), value
             )
+
+        # delete the record
+        kobo_client.delete_instance(kobo_uid, instance)
 
     for object in objects_to_delete:
         object.delete()

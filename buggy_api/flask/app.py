@@ -9,6 +9,7 @@ app = Flask(__name__)
 api = Api(app)
 
 app.config['JOB_BUCKET'] = 'buggy-job-bucket'
+app.config['BACKUP_BUCKET'] = 'buggy-backup-bucket'
 
 api.add_resource(Submissions, '/submissions')
 api.add_resource(Image, '/image')

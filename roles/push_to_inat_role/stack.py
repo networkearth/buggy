@@ -22,6 +22,12 @@ class RoleStack(Stack):
         )
         bucket.grant_read_write(role)
 
+        bucket_name = 'buggy-backup-bucket'
+        bucket = s3.Bucket.from_bucket_name(
+            self, bucket_name, bucket_name=bucket_name
+        )
+        bucket.grant_read_write(role)
+
         role.add_to_policy(
             iam.PolicyStatement(
                 principals=[],

@@ -27,6 +27,12 @@ class UserStack(Stack):
         )
         bucket.grant_read_write(group)
 
+        bucket_name = 'buggy-backup-bucket'
+        bucket = s3.Bucket.from_bucket_name(
+            self, bucket_name, bucket_name=bucket_name
+        )
+        bucket.grant_read_write(group)
+
         group.add_to_policy(
             iam.PolicyStatement(
                 principals=[],
