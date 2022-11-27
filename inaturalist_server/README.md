@@ -40,7 +40,7 @@ Write the following to `config/database.yml`
 
 ```yaml
 login: &login
-  host: host.docker.internal
+  host: 44.212.148.112
   encoding: utf8
   adapter: postgis
   template: template_postgis
@@ -62,7 +62,7 @@ production:
 
 Export the following environment variables so you can connect to the database with `psql`:
 ```bash
-export PGHOST=host.docker.internal
+export PGHOST=44.212.148.112
 export PGUSER=username
 export PGPASSWORD=password
 ```
@@ -95,7 +95,7 @@ Back in `bash` execute the following to setup the schemas:
 rake db:schema:load
 ```
 
-Update `config/config.yml` to replace all instances of `localhost` with `host.docker.internal`.
+Update `config/config.yml` to replace all instances of `localhost` with `44.212.148.112`.
 
 then run
 ```bash
@@ -111,7 +111,7 @@ npm run webpack
 
 Now let's seed some data in the site
 ```bash
-rails r "Site.create( name: 'iNaturalist', url: 'http://localhost:3000' )"
+rails r "Site.create( name: 'iNaturalist', url: 'http://44.212.148.112:3000' )"
 rake inaturalist:generate_translations_js
 rails r tools/load_iconic_taxa.rb
 ```
@@ -120,8 +120,7 @@ You'll get lots of translation warning messages, but no need to worry.
 
 Add the following to the end of `config/environments/development.rb`:
 ```bash
-config.hosts << "host.docker.internal"
-config.hosts << ""
+config.hosts << "44.212.148.112"
 ```
 Note that you'll need to grab the appropriate elastic ip from the aws console
 
@@ -166,7 +165,7 @@ app
 and then run it with: 
 ```bash
 chmod 777 tools/create_users_and_app.rb
-rails tools/create_users_and_app.rb
+rails r tools/create_users_and_app.rb
 ```
 
 Now go ahead and shut down the rails app and then before exiting the container let's save all that work we did:
@@ -208,7 +207,7 @@ Start up the base container with:
 docker run --rm --add-host=host.docker.internal:host-gateway --name inaturalist_api_base_container -p 4000:4000 -it inaturalist_api_base/latest
 ```
 
-Update the hosts in `config.js` to point to `host.docker.internal` for all the services and the webapp. Also change the DB password to be `password` and user to be `username`. You'll also need to add an `http://` in front of the hostname for elasticsearch. 
+Update the hosts in `config.js` to point to `44.212.148.112` for all the services and the webapp. Also change the DB password to be `password` and user to be `username`. You'll also need to add an `http://` in front of the hostname for elasticsearch. 
 
 Setup Node
 ```bash
