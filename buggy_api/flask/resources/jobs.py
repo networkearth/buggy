@@ -96,7 +96,7 @@ class Job(Resource):
                     '-bb',
                     current_app.config['BACKUP_BUCKET'],
                     '-a',
-                    'http://buggy-api-service-1987658178.us-east-1.elb.amazonaws.com',
+                    'http://buggy-api-service-1105356497.us-east-1.elb.amazonaws.com',
                     '-ia',
                     'http://44.212.148.112:4000/v1',
                     '-iw',

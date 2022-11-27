@@ -17,8 +17,8 @@ def create_app():
     app.config['KOBO_USERNAME'] = os.environ['KOBO_USERNAME']
     app.config['INATURALIST_API_URL'] = 'http://44.212.148.112:4000/v1'
     app.config['INATURALIST_APP_URL'] = 'http://44.212.148.112:3000'
-    app.config['INATURALIST_APP_ID'] = 'u55EU9sL8lgYL_dO1eOPtDQOMUbZQi6u98v1WW1ZPJU'
-    app.config['INATURALIST_APP_SECRET'] = 'YMaa32gxWVQs46-lw_Woi-gEq-FVsgp78khJdDTQKo0'
+    app.config['INATURALIST_APP_ID'] = 'RKPG7l623ygtZ7LSqVNmJUALNH5lPCVEKhN_aRv9rv4'
+    app.config['INATURALIST_APP_SECRET'] = 'tKE0ZG8s3gHyd9QVoBx3uWhRZ1Xvvi9rfSyTUfPTDRI'
 
     bootstrap.init_app(app)
 

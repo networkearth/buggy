@@ -56,6 +56,16 @@ class ServerStack(Stack):
             ec2.Port.tcp(5432),
             'allow postgres access from anywhere'
         )
+        security_group.add_ingress_rule(
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(9200),
+            'allow elasticsearch access from anywhere'
+        )
+        security_group.add_ingress_rule(
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(6379),
+            'allow redis access from anywhere'
+        )
 
         server_name = conf['name']
         server = ec2.Instance(

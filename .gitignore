@@ -3,3 +3,4 @@ cdk.out
 creds
 buggy_deployer.egg-info
 build
+docs/diagrams/.*
