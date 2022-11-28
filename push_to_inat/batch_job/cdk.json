@@ -1,16 +1,13 @@
 {
-    "app": "synth_batch_job",
+    "app": "python3 app.py",
     "context": {
         "environments": {
-            "buggy_dev": {
-                "namespace": "buggy",
-                "stage": "dev",
+            "buggy-dev": {
                 "region": "us-east-1",
                 "account": "575101084097",
                 "memory": "2048",
                 "vcpu": "1",
-                "job_name": "push-to-inat",
-                "execution_role": "push-to-inat"
+                "name": "push-to-inat"
             }
         }
     }

@@ -1,6 +1,6 @@
 from aws_cdk import App, Environment
 
-from stack import ContainerStack
+from stack import RoleStack
 
 app = App()
 
@@ -9,8 +9,8 @@ conf = app.node.try_get_context("environments")[stage]
 env = Environment(account=conf["account"], region=conf["region"])
 conf['stage'] = stage
 
-stack = ContainerStack(
-    app, '-'.join([stage, conf["name"], "container", "stack"]), conf, env=env
+stack = RoleStack(
+    app, '-'.join([stage, conf["name"], "role", "stack"]), conf, env=env
 )
 
 app.synth()

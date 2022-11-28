@@ -25,11 +25,11 @@ def get_submissions(api_url, username, password, uid, email):
 @click.option('-e', '--email', required=True, help='email to do uploads for')
 @click.option('-b', '--bucket', required=True, help='bucket to look for jobs in')
 @click.option('-bb', '--backup_bucket', required=True, help='bucket to backup kobo records to')
-@click.option('-a', '--api_url', required=True, help='api endpoint')
 @click.option('-ia', '--inat_api', required=True, help='inat api url')
 @click.option('-iw', '--inat_webapp', required=True, help='inat webapp url')
-@click.option('-r', '--region', required=True, help='aws region')
-def main(email, bucket, backup_bucket, api_url, inat_api, inat_webapp, region):
+def main(email, bucket, backup_bucket, inat_api, inat_webapp):
+    api_url = os.environ['API_URL']
+
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucket)
 

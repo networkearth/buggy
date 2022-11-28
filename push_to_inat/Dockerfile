@@ -35,5 +35,8 @@ RUN pip3 install -r requirements.txt
 # Copy the app to the working directory
 COPY scripts .
 
+ARG API_URL
+ENV API_URL=$API_URL
+
 # Specify the command to run on container start
 ENTRYPOINT [ "python3", "main.py" ]

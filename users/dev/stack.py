@@ -1,6 +1,7 @@
 from aws_cdk import (
     aws_s3 as s3,
     aws_iam as iam,
+    aws_secretsmanager as secrets,
     Stack
 )
 
@@ -45,15 +46,8 @@ class UserStack(Stack):
             )
         )
 
-        #group.add_to_policy(
-        #    iam.PolicyStatement(
-        #        principals=[],
-        #        actions=[
-        #            "iam:GetRole",
-        #            "iam:PassRole"
-        #        ],
-        #        resources=[
-        #            '*'
-        #        ]
-        #    )
-        #)
+        secret_name = '-'.join(['buggy-dev', 'inaturalist'])
+        secret = secrets.Secret.from_secret_name_v2(
+            self, secret_name, secret_name=secret_name
+        )
+        secret.grant_read(group)

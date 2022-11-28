@@ -2,13 +2,15 @@ from aws_cdk import App, Environment
 
 from stack import BucketStack
 
-app = App(context={"env": "dev"})
+app = App()
 
-conf = app.node.try_get_context("environments")[app.node.try_get_context("env")]
+stage = "-".join([app.node.try_get_context("namespace"), app.node.try_get_context("environment")])
+conf = app.node.try_get_context("environments")[stage]
 env = Environment(account=conf["account"], region=conf["region"])
+conf['stage'] = stage
 
 stack = BucketStack(
-    app, '-'.join([conf["name"], "role", "stack"]), conf, env=env
+    app, '-'.join([stage, conf["name"], "bucket", "stack"]), conf, env=env
 )
 
 app.synth()

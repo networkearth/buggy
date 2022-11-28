@@ -8,14 +8,11 @@ from aws_cdk import (
 
 from constructs import Construct
 
-def prefix(conf):
-    return '-'.join([conf['namespace'], conf['stage']])
-
 class BatchJobStack(Stack):
     def __init__(self, scope: Construct, id: str, conf: dict, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        repository_name = '-'.join([prefix(conf), conf['job_name']])
+        repository_name = '-'.join([conf['stage'], conf['name']])
         repository = ecr.CfnRepository(
             self, repository_name + '-ecr',
             repository_name=repository_name
@@ -32,10 +29,10 @@ class BatchJobStack(Stack):
         )
 
         container_properties = batch.CfnJobDefinition.ContainerPropertiesProperty(
-            image=f"{conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{prefix(conf)}-{conf['job_name']}:latest",
+            image=f"{conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{conf['stage']}-{conf['name']}:latest",
             resource_requirements=[vcpu_property, memory_property],
-            execution_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['execution_role']}",
-            job_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['execution_role']}",
+            execution_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['stage']}-{conf['name']}",
+            job_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['stage']}-{conf['name']}",
             fargate_platform_configuration=batch.CfnJobDefinition.FargatePlatformConfigurationProperty(
                 platform_version="1.4.0"
             ),
@@ -44,7 +41,7 @@ class BatchJobStack(Stack):
             )
         )
 
-        batch_job_name = '-'.join([prefix(conf), conf['job_name']])
+        batch_job_name = '-'.join([conf['stage'], conf['name']])
         batch_job = batch.CfnJobDefinition(
             self, batch_job_name,
             job_definition_name=batch_job_name,

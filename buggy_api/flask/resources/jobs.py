@@ -84,9 +84,9 @@ class Job(Resource):
         email = kwargs['inaturalist_email']
         batch = boto3.client('batch')
         batch.submit_job(
-            jobQueue='arn:aws:batch:us-east-1:575101084097:job-queue/buggy',
+            jobQueue=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-queue/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
             jobName=f'pushtoinat',
-            jobDefinition='arn:aws:batch:us-east-1:575101084097:job-definition/buggy-dev-push-to-inat',
+            jobDefinition=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-definition/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
             containerOverrides={
                 'command': [
                     '-e',
@@ -95,14 +95,10 @@ class Job(Resource):
                     current_app.config['JOB_BUCKET'],
                     '-bb',
                     current_app.config['BACKUP_BUCKET'],
-                    '-a',
-                    'http://buggy-api-service-1105356497.us-east-1.elb.amazonaws.com',
                     '-ia',
-                    'http://44.212.148.112:4000/v1',
+                    current_app.config['INATURALIST_API'],
                     '-iw',
-                    'http://44.212.148.112:3000',
-                    '-r',
-                    'us-east-1'
+                    current_app.config['INATURALIST_WEBAPP']
                 ]
             }
         )
