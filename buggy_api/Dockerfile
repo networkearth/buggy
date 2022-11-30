@@ -15,9 +15,6 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
 # add git, vim and curl
 RUN apt-get -y install git
 
-# By default, listen on port 5000
-EXPOSE 5000/tcp
-
 # Set the working directory in the container
 WORKDIR /app
 
@@ -28,6 +25,18 @@ RUN pip3 install -r requirements.txt
 
 # Copy the app to the working directory
 COPY flask .
+
+ARG APP_NAMESPACE
+ENV APP_NAMESPACE=$APP_NAMESPACE
+
+ARG APP_ENVIRONMENT
+ENV APP_ENVIRONMENT=$APP_ENVIRONMENT
+
+ARG APP_ACCOUNT
+ENV APP_ACCOUNT=$APP_ACCOUNT
+
+ARG APP_REGION
+ENV APP_REGION=$APP_REGION
 
 # Specify the command to run on container start
 CMD [ "python3", "./app.py" ]

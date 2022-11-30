@@ -1,0 +1,1 @@
+update file_prefixes set prefix = 'http://44.212.148.112:3000/attachments/local_photos/files'
