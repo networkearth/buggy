@@ -51,3 +51,15 @@ class UserStack(Stack):
             self, secret_name, secret_name=secret_name
         )
         secret.grant_read(group)
+
+        secret_name = '-'.join(['buggy-dev', 'secret-key'])
+        secret = secrets.Secret.from_secret_name_v2(
+            self, secret_name, secret_name=secret_name
+        )
+        secret.grant_read(group)
+
+        secret_name = '-'.join(['buggy-dev', 'kobo'])
+        secret = secrets.Secret.from_secret_name_v2(
+            self, secret_name, secret_name=secret_name
+        )
+        secret.grant_read(group)

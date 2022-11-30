@@ -17,7 +17,7 @@ class RoleStack(Stack):
             assumed_by=iam.ServicePrincipal('ecs-tasks.amazonaws.com')
         )
 
-        bucket_name = '-'.join([conf['stage'], 'job-bucket'])
+        bucket_name = '-'.join([conf['stage'], 'job'])
         bucket = s3.Bucket.from_bucket_name(
             self, bucket_name, bucket_name=bucket_name
         )
@@ -35,6 +35,18 @@ class RoleStack(Stack):
                 actions=[
                     "ecr:*",
                     "logs:*"
+                ],
+                resources=[
+                    '*'
+                ]
+            )
+        )
+
+        role.add_to_policy(
+            iam.PolicyStatement(
+                principals=[],
+                actions=[
+                    "batch:SubmitJob"
                 ],
                 resources=[
                     '*'

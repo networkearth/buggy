@@ -24,7 +24,7 @@ class ServiceStack(Stack):
                     ),
                     tag='latest',
                 ),
-                container_port=5002,
+                container_port=5001,
                 task_role=iam.Role.from_role_name(
                     self, '-'.join([conf['stage'], conf['name'], 'role']),
                     role_name='-'.join([conf['stage'], conf['name']])
