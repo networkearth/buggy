@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
-from gluon.kobo.client import KoboClient
+from gluon.kobo import client
 
-from transformers.transformers import BUGGY_TRANSFORMERS
+from ..transformers.transformers import BUGGY_TRANSFORMERS
 
 class Submissions(Resource):
     get_parser = reqparse.RequestParser()
@@ -32,7 +32,7 @@ class Submissions(Resource):
 
     def get(self):
         kwargs = Submissions.get_parser.parse_args()
-        kobo = KoboClient(kwargs['kobo_username'], kwargs['kobo_password'])
+        kobo = client.KoboClient(kwargs['kobo_username'], kwargs['kobo_password'])
         email = kwargs['email'].strip()
         data = kobo.pull_data(kwargs['kobo_uid'])
         transformed_data = []

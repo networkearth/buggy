@@ -4,7 +4,7 @@ import json
 
 from functools import partial
 
-from ..transformers import (
+from project.transformers.transformers import (
     notes_transform,
     mapping_transform,
     convert_key_transform,
