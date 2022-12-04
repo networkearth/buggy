@@ -62,7 +62,9 @@ activity_transform = partial(
         "prey": "Preyed upon",
         "guarding": "Guarding eggs or younglings",
         "tending": "Tending",
-        "other": "Other"
+        "other": "Other",
+        "cleaning": "Cleaning",
+        "vigilant": "Vigilant"
     },
     "Other"
 )
@@ -116,7 +118,6 @@ wetness_transform = partial(
 )
 
 INAT_ARTHROPOD_TAXA_IDS = {
-    "anisoptera": 47792,
     "aphidomorpha": 901813,
     "araneae": 47118,
     "blattodea": 81769,
@@ -129,6 +130,8 @@ INAT_ARTHROPOD_TAXA_IDS = {
     "lepidoptera": 47157,
     "opiliones": 47367,
     "trichoptera": 62164,
+    "odonata": 47792,
+    "orthoptera": 47651,
     "other": 47120,
     "unidentified": 47120,
 }
@@ -139,7 +142,6 @@ arthropod_taxa_transform = partial(
     INAT_ARTHROPOD_TAXA_IDS,
     None
 )
-
 
 INAT_HOST_TAXA_IDS = {
     "angiospermae": 47125,

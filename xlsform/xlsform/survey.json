@@ -268,7 +268,7 @@
                 "name": "host_phenology",
                 "relevant": "${has_host} = 'yes'",
                 "required": "false",
-                "type": "select_multiple host_phenology"
+                "type": "select_one host_phenology"
             },
             {
                 "appearance": "w4",
