@@ -1,0 +1,318 @@
+[
+    {
+        "name": "username",
+        "type": "username"
+    },
+    {
+        "name": "deviceid",
+        "type": "deviceid"
+    },
+    {
+        "appearance": "field-list",
+        "label::English (en)": "Session information",
+        "name": "session_info",
+        "required": "false",
+        "survey": [
+            {
+                "media::image::English (en)": "EwA-Buggy-x.png",
+                "name": "ewa_logo",
+                "required": "false",
+                "type": "note"
+            },
+            {
+                "appearance": "w4",
+                "hint::English (en)": "Help EwA document arthropod interaction networks, so that we can understand better the associations between arthropod and their host, and their activities \u25a1 \u24d8 Documentation example [here](https://drive.google.com/file/d/1j2jWjASeDOLd2vzMmEd-OGqHA03J5KFA/view). Thanks!",
+                "label::English (en)": "Welcome!",
+                "name": "intro_note",
+                "required": "false",
+                "type": "note"
+            },
+            {
+                "appearance": "w4",
+                "constraint": "regex(., \u2018^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+[.][A-Za-z]{2,}$\u2019)",
+                "constraint_message": "Please enter a valid email address",
+                "hint::English (en)": "Please enter your email so that we can contact you if we have a question regarding a record.",
+                "label::English (en)": "\ud83d\udc64 Team member email",
+                "name": "input_email",
+                "required": "true",
+                "type": "text"
+            },
+            {
+                "appearance": "w4",
+                "calculation": "now()",
+                "label::English (en)": "Date and time of survey",
+                "name": "survey_ts",
+                "required": "true",
+                "type": "datetime"
+            },
+            {
+                "appearance": "likert",
+                "label::English (en)": "Survey method",
+                "name": "survey_method",
+                "required": "true",
+                "type": "select_one survey_method"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify what other method you are using",
+                "name": "survey_method_other",
+                "relevant": "${survey_method} = 'other'",
+                "required": "true",
+                "type": "text"
+            },
+            {
+                "constraint": ". > 0",
+                "constraint_message": "Ooops! please, enter a positive number",
+                "hint::English (en)": "Duration of the survey session (in minutes)",
+                "label::English (en)": "Survey duration",
+                "name": "Survey_duration",
+                "relevant": "${survey_method} = 'transect_survey' or ${survey_method} = 'area'",
+                "required": "true",
+                "type": "integer"
+            },
+            {
+                "appearance": "w4",
+                "hint::English (en)": "Click on the target icon \u2316 to record your location. If the accuracy is large, you can click the icon again to try refining the reading.",
+                "label::English (en)": "\ud83d\uddfa\ufe0f Survey location",
+                "name": "location",
+                "required": "true",
+                "type": "geopoint"
+            }
+        ],
+        "type": "begin_group"
+    },
+    {
+        "appearance": "field-list",
+        "label::English (en)": "Arthropod documentation",
+        "name": "arthropod_documentation",
+        "required": "false",
+        "survey": [
+            {
+                "appearance": "w4 minimal",
+                "hint::English (en)": "\u24d8 Quick guide to the main arthropod groups if needed: [here](https://drive.google.com/file/d/1XpDGweu6TsLOOimjtMSWDAnmOOKqWZxG/view)",
+                "label::English (en)": "\ud83e\udeb2 Arthropod group",
+                "name": "arthropod_group",
+                "required": "true",
+                "type": "select_one arthropod_order"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify what other arthropod group you are observing",
+                "name": "arthropod_group_other",
+                "relevant": "${arthropod_group} = 'other'",
+                "required": "true",
+                "type": "text"
+            },
+            {
+                "appearance": "w2",
+                "constraint": ". > 0",
+                "constraint_message": "Ooops! this value can't be negative",
+                "default": "1",
+                "hint::English (en)": "How many individuals of that same species?",
+                "label::English (en)": "\ud83e\uddee Quantity",
+                "name": "quantity",
+                "required": "true",
+                "type": "integer"
+            },
+            {
+                "appearance": "w2",
+                "constraint": ". > 0",
+                "constraint_message": "Ooops! this value can't be negative",
+                "hint::English (en)": "Only record arthropods longer than 2 mm (body only not counting the legs)",
+                "label::English (en)": "\ud83d\udccf Length (mm)",
+                "name": "length",
+                "relevant": "${quantity} > 0",
+                "required": "true",
+                "type": "integer"
+            },
+            {
+                "hint::English (en)": "Take a photo of face, top, side if possible (3 pics max)",
+                "label::English (en)": "\ud83d\udcf8 Bug photoshoot",
+                "name": "arthropod_photo_1",
+                "parameters": "max-pixels=1024",
+                "required": "true",
+                "type": "image"
+            },
+            {
+                "appearance": "horizontal-compact",
+                "default": "no",
+                "label::English (en)": "I want to add more pics",
+                "name": "More_bug_photo",
+                "relevant": "${arthropod_photo_1} != ''",
+                "required": "false",
+                "type": "select_one yes_no"
+            },
+            {
+                "hint::English (en)": "Another view of the same bug might help",
+                "label::English (en)": "\ud83d\udcf8 Bug photo #2",
+                "name": "arthropod_photo_2",
+                "parameters": "max-pixels=1024",
+                "relevant": "${arthropod_photo_1} != '' and ${More_bug_photo} = 'yes'",
+                "required": "false",
+                "type": "image"
+            },
+            {
+                "hint::English (en)": "A chance to document another different view",
+                "label::English (en)": "\ud83d\udcf8 Bug photo #3",
+                "name": "arthropod_photo_3",
+                "parameters": "max-pixels=1024",
+                "relevant": "${arthropod_photo_2} != ''",
+                "required": "false",
+                "type": "image"
+            },
+            {
+                "appearance": "w4",
+                "hint::English (en)": "It will help increase the quality of the documentation. Be as accurate as you can but if you don't know it, it's okay as well!",
+                "label::English (en)": "\ud83c\udd94 If known, provide the arthropod's family name, or the genus, or the species",
+                "name": "arthropod_more",
+                "required": "false",
+                "type": "text"
+            },
+            {
+                "appearance": "w4 minimal",
+                "hint::English (en)": "If known",
+                "label::English (en)": "Developmental stage",
+                "name": "developmental_stage",
+                "relevant": "${quantity} > 0",
+                "required": "false",
+                "type": "select_one developmental_stage"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify what other life stage you are observing",
+                "name": "developmental_stage_other",
+                "relevant": "${developmental_stage} = 'other'",
+                "required": "true",
+                "type": "text"
+            },
+            {
+                "appearance": "w4 minimal",
+                "hint::English (en)": "If known",
+                "label::English (en)": "Activity",
+                "name": "activity",
+                "relevant": "${quantity} > 0",
+                "required": "false",
+                "type": "select_one activity"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify what other activity you are observing",
+                "name": "activity_other",
+                "relevant": "${activity} = 'other'",
+                "required": "true",
+                "type": "text"
+            }
+        ],
+        "type": "begin_group"
+    },
+    {
+        "appearance": "field-list",
+        "label::English (en)": "Host documentation",
+        "name": "host_documentation",
+        "required": "false",
+        "survey": [
+            {
+                "appearance": "horizontal-compact",
+                "label::English (en)": "Is the arthropod on a support (plant, fungus, moss, etc.)?",
+                "name": "has_host",
+                "required": "true",
+                "type": "select_one yes_no"
+            },
+            {
+                "appearance": "horizontal-compact",
+                "hint::English (en)": "Wet leaves, fungi, or other...",
+                "label::English (en)": "Is the support wet?",
+                "name": "wet_support",
+                "relevant": "${has_host} = 'yes'",
+                "required": "false",
+                "type": "select_one yes_no"
+            },
+            {
+                "appearance": "w4 minimal",
+                "label::English (en)": "Host taxonomic group",
+                "name": "host_group",
+                "relevant": "${has_host} = 'yes'",
+                "required": "false",
+                "type": "select_one host_group"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify that other host group you are observing",
+                "name": "host_group_other",
+                "relevant": "${host_group} = 'other'",
+                "required": "true",
+                "type": "text"
+            },
+            {
+                "hint::English (en)": "If the photo of the 'bug' does not show the host clearly, please take one of the host so that it is identifiable",
+                "label::English (en)": "\ud83d\udcf8 Host photoshoot",
+                "name": "host_photo",
+                "parameters": "max-pixels=1024",
+                "relevant": "${has_host} = 'yes'",
+                "required": "false",
+                "type": "image"
+            },
+            {
+                "appearance": "w4",
+                "hint::English (en)": "It will help increase the quality of the documentation. Be as accurate as you can but if you don't know it, it's okay as well!",
+                "label::English (en)": "\ud83c\udd94 If known, provide the host's family name, or the genus, or the species.",
+                "name": "host_more",
+                "relevant": "${has_host} = 'yes'",
+                "required": "false",
+                "type": "text"
+            },
+            {
+                "appearance": "columns-pack",
+                "hint::English (en)": "If known",
+                "label::English (en)": "Host phenology",
+                "name": "host_phenology",
+                "relevant": "${has_host} = 'yes'",
+                "required": "false",
+                "type": "select_multiple host_phenology"
+            },
+            {
+                "appearance": "w4",
+                "label::English (en)": "Please specify what other phenophase(s) you are observing",
+                "name": "host_phenology_other",
+                "relevant": "selected(${host_phenology},'other')",
+                "required": "true",
+                "type": "text"
+            }
+        ],
+        "type": "begin_group"
+    },
+    {
+        "appearance": "field-list",
+        "label::English (en)": "Before you leave...",
+        "name": "notes_page",
+        "required": "false",
+        "survey": [
+            {
+                "appearance": "w4 multiline",
+                "hint::English (en)": "Additional comments? Any feedback? Share them here.",
+                "label::English (en)": "\ud83d\udcac Notes",
+                "name": "notes",
+                "required": "false",
+                "type": "text"
+            },
+            {
+                "label::English (en)": "Thanks for your contribution! \ud83c\udf10 Learn more about [Earthwise Aware](http://earthwiseaware.org)",
+                "name": "site",
+                "read_only": "TRUE",
+                "required": "false",
+                "type": "text"
+            }
+        ],
+        "type": "begin_group"
+    },
+    {
+        "calculation": "'vBVpss9Ex7Nu95ggqdcYAn'",
+        "name": "__version__",
+        "type": "calculate"
+    },
+    {
+        "calculation": "'vH5GrZ5SQBL2WXLVLKpuhB'",
+        "name": "_version_",
+        "type": "calculate"
+    }
+]
