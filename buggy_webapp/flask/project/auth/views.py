@@ -1,7 +1,7 @@
 from flask import redirect, render_template, url_for, request, current_app, flash
 from flask_login import login_user, logout_user, login_required
 
-from gluon.inaturalist.client import iNaturalistClient
+from gluon.inaturalist import client as inaturalist_client
 
 from . import auth
 
@@ -18,7 +18,7 @@ def login_post():
 
     login_succeeded = True
     try:
-        client = iNaturalistClient(
+        client = inaturalist_client.iNaturalistClient(
             email, 
             password,
             current_app.config['INATURALIST_APP_ID'],
