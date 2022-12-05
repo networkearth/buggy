@@ -6,7 +6,17 @@ from project import create_app
 TEST_SECRETS = {
     'buggy-test-inaturalist': {
         'api': 'https://api.fakeinaturalist.org/v1',
-        'webapp': 'https://www.fakeinaturalist.org'
+        'webapp': 'https://www.fakeinaturalist.org',
+        'app_id': 'iamanappid',
+        'app_secret': 'iamanappsecret'
+    },
+    'buggy-test-secret-key': {
+        'secret_key': 'whatabigsecret'
+    },
+    'buggy-test-kobo': {
+        'uid': 'iguessiamauid',
+        'username': 'beetlebub',
+        'password': 'chitinisking'
     }
 }
 
