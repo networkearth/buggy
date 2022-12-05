@@ -121,6 +121,7 @@ class TestImageTransformer(unittest.TestCase):
 NOTE = """
 The Thing They Forgot:
 I had a great time. :)
+
 My Notes:
 Hello there!
 """.strip()
@@ -144,6 +145,8 @@ class TestNotesTransform(unittest.TestCase):
             ]
         )
         key, transformed = transformer(entry)
+        print(NOTE)
+        print(transformed)
         assert key == "notes"
         assert transformed == NOTE
 

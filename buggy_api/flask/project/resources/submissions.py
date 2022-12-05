@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from gluon.kobo import client
 
-from ..transformers.transformers import BUGGY_TRANSFORMERS
+from ..transformers import transformers
 
 class Submissions(Resource):
     get_parser = reqparse.RequestParser()
@@ -40,7 +40,7 @@ class Submissions(Resource):
         for entry in data:
             try:
                 transformed = {}
-                for transformer in BUGGY_TRANSFORMERS:
+                for transformer in transformers.BUGGY_TRANSFORMERS:
                     key, value = transformer(entry)
                     transformed[key] = value
                 transformed_data.append(transformed)
