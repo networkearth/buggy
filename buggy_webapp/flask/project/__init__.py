@@ -1,4 +1,3 @@
-import os
 import boto3
 import json
 
@@ -8,13 +7,13 @@ from flask_login import LoginManager
 
 bootstrap = Bootstrap()
 
-def create_app():
+def create_app(environment, namespace, account, region, api_url):
     app = Flask(__name__)
 
-    app.config['ENVIRONMENT'] = os.environ['APP_ENVIRONMENT']
-    app.config['NAMESPACE'] = os.environ['APP_NAMESPACE']
-    app.config['ACCOUNT'] = os.environ['APP_ACCOUNT']
-    app.config['REGION'] = os.environ['APP_REGION']
+    app.config['ENVIRONMENT'] = environment
+    app.config['NAMESPACE'] = namespace
+    app.config['ACCOUNT'] = account
+    app.config['REGION'] = region
 
     SECRETS = {
         'INATURALIST_API_URL': {
@@ -63,7 +62,7 @@ def create_app():
         )
         app.config[key] = json.loads(response['SecretString'])[info['key']]
 
-    app.config['API_URL'] = os.environ['API_URL']
+    app.config['API_URL'] = api_url
 
     bootstrap.init_app(app)
 
@@ -84,5 +83,3 @@ def create_app():
         return User(id)
 
     return app
-
-app = create_app()

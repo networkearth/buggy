@@ -42,4 +42,4 @@ ARG API_URL
 ENV API_URL=$API_URL
 
 # Specify the command to run on container start
-CMD [ "/bin/bash", "./run.sh" ]
+CMD [ "python3", "./app.py" ]
