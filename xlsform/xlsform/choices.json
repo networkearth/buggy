@@ -1,0 +1,296 @@
+{
+    "activity": {
+        "cleaning": {
+            "label::English (en)": "Cleaning",
+            "media::image::English (en)": "",
+            "order": "10"
+        },
+        "feeding": {
+            "label::English (en)": "Feeding",
+            "media::image::English (en)": "",
+            "order": "5"
+        },
+        "foraging": {
+            "label::English (en)": "Foraging",
+            "media::image::English (en)": "",
+            "order": "4"
+        },
+        "guarding": {
+            "label::English (en)": "Guarding",
+            "media::image::English (en)": "",
+            "order": "8"
+        },
+        "mating": {
+            "label::English (en)": "Mating",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "moving": {
+            "label::English (en)": "Moving",
+            "media::image::English (en)": "",
+            "order": "3"
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "",
+            "order": "11"
+        },
+        "predator": {
+            "label::English (en)": "Preying upon",
+            "media::image::English (en)": "",
+            "order": "7"
+        },
+        "prey": {
+            "label::English (en)": "Being preyed upon",
+            "media::image::English (en)": "",
+            "order": "6"
+        },
+        "resting": {
+            "label::English (en)": "Resting",
+            "media::image::English (en)": "",
+            "order": "2"
+        },
+        "tending": {
+            "label::English (en)": "Tending",
+            "media::image::English (en)": "",
+            "order": "9"
+        },
+        "vigilant": {
+            "label::English (en)": "Vigilant",
+            "media::image::English (en)": "",
+            "order": "1"
+        }
+    },
+    "arthropod_order": {
+        "aphidomorpha": {
+            "label::English (en)": "Aphids and Allies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "araneae": {
+            "label::English (en)": "Spiders",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "blattodea": {
+            "label::English (en)": "Cockroaches",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "cicadomorpha": {
+            "label::English (en)": "Cicadas, Leafhoppers, and Treehoppers",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "coleoptera": {
+            "label::English (en)": "Beetles",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "diptera": {
+            "label::English (en)": "Flies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "hemiptera": {
+            "label::English (en)": "True Bugs",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "hymenoptera_1": {
+            "label::English (en)": "Bees, Wasps, and Sawflies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "hymenoptera_2": {
+            "label::English (en)": "Ants",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "lepidoptera": {
+            "label::English (en)": "Moths and Butterflies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "odonata": {
+            "label::English (en)": "Damselflies and Dragonflies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "opiliones": {
+            "label::English (en)": "Harvestman",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "orthoptera": {
+            "label::English (en)": "Grasshoppers, Crickets, and Katydids",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "trichoptera": {
+            "label::English (en)": "Caddisflies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "unidentified": {
+            "label::English (en)": "Unidentified",
+            "media::image::English (en)": "",
+            "order": ""
+        }
+    },
+    "developmental_stage": {
+        "adult": {
+            "label::English (en)": "Adult",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "egg": {
+            "label::English (en)": "Egg or eggsac",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "larva": {
+            "label::English (en)": "Larva or caterpillar",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "nymph": {
+            "label::English (en)": "Nymph",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "pupa": {
+            "label::English (en)": "Pupa",
+            "media::image::English (en)": "",
+            "order": ""
+        }
+    },
+    "host_group": {
+        "angiospermae": {
+            "label::English (en)": "Flowering plants",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "bryophyta": {
+            "label::English (en)": "Mosses",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "fungi": {
+            "label::English (en)": "Fungi",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "pinopsida": {
+            "label::English (en)": "Conifers",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "poales": {
+            "label::English (en)": "Grasses, Sedges, Cattails, and Allies",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "polypodiopsida": {
+            "label::English (en)": "Ferns",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "unidentified": {
+            "label::English (en)": "Unidentified",
+            "media::image::English (en)": "",
+            "order": ""
+        }
+    },
+    "host_phenology": {
+        "breaking": {
+            "label::English (en)": "Breaking leaf bud",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "flowers": {
+            "label::English (en)": "Flowers",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "fruiting": {
+            "label::English (en)": "Fruiting",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "increasing": {
+            "label::English (en)": "Increasing leaf size",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "initial": {
+            "label::English (en)": "Initial growth",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "mature": {
+            "label::English (en)": "Mature leaf",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "",
+            "order": ""
+        }
+    },
+    "survey_method": {
+        "area": {
+            "label::English (en)": "Area search",
+            "media::image::English (en)": "area_search.png",
+            "order": "3"
+        },
+        "incidental": {
+            "label::English (en)": "Incidental",
+            "media::image::English (en)": "incidental.png",
+            "order": ""
+        },
+        "other": {
+            "label::English (en)": "Other",
+            "media::image::English (en)": "other.png",
+            "order": "4"
+        },
+        "transect_survey": {
+            "label::English (en)": "Transect",
+            "media::image::English (en)": "transect.png",
+            "order": "2"
+        },
+        "walking": {
+            "label::English (en)": "Walking",
+            "media::image::English (en)": "walking.png",
+            "order": "1"
+        }
+    },
+    "yes_no": {
+        "no": {
+            "label::English (en)": "No",
+            "media::image::English (en)": "",
+            "order": ""
+        },
+        "yes": {
+            "label::English (en)": "Yes",
+            "media::image::English (en)": "",
+            "order": ""
+        }
+    }
+}

@@ -1,0 +1,2 @@
+xlsform@git+https://github.com/networkearth/xlsform
+pytest
