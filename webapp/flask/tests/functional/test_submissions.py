@@ -41,6 +41,13 @@ def test_view_wo_login(client):
     assert response.request.path == '/login'
     assert response.request.query_string.decode('utf-8') == 'next=%2Fsubmissions'
 
+def test_view_wo_api(client):
+    with client.session_transaction() as session:
+        session['_user_id'] = 'dragon@bug.org sixlegsisbest'
+
+    response = client.get('/submissions')
+    assert response.status_code == 500
+
 @httpretty.activate
 def test_post(client):
     with client.session_transaction() as session:
@@ -79,3 +86,15 @@ def test_post(client):
         'inaturalist_password': 'sixlegsisbest', 'client_id': 'iamanappid',
         'client_secret': 'iamanappsecret', 'instances': '12,32'
     }
+
+def test_post_wo_api(client):
+    with client.session_transaction() as session:
+        session['_user_id'] = 'dragon@bug.org sixlegsisbest'
+
+    data = {
+        12: 'checked',
+        32: 'checked'
+    }
+
+    response = client.post('/submissions', data=data, follow_redirects=True)
+    assert response.status_code == 500

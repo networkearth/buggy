@@ -23,7 +23,5 @@ def test_inaturalist_field_present():
             key, value = transformer(entry)
             transformed[key] = value
         assert not set([
-            'taxa', 'longitude', 'latitude', 'ts',
-            'positional_accuracy', 'notes', 
-            'observation_fields', 'images'
+            'images', 'instance'
         ]) - set(transformed.keys())
