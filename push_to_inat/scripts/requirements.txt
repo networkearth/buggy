@@ -2,3 +2,5 @@ click
 boto3
 requests
 gluon@git+https://github.com/networkearth/gluon
+pytest==7.1.3
+pytest-mock==3.10.0
