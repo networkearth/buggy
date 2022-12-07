@@ -43,5 +43,5 @@ class ServiceStack(Stack):
             assign_public_ip=True,
             domain_name=domain_name,
             domain_zone=hosted_zone,
-            #protocol=elbv2.ApplicationProtocol.HTTPS
+            protocol=elbv2.ApplicationProtocol.HTTPS
         )
