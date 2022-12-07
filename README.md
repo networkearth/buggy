@@ -1,8 +1,19 @@
 # ewa-buggy-api
 API for moving Earthwise Aware Buggy records to iNaturalist
 
+## Building the App
+To build the app you'll need deployer credentials in your `~/.aws/credentials` file under the profile `deployer`. You'll need to build things out in a specific order:
+1. `buckets`
+2. Create the needed secrets (see `api` and `webapp` flask apps)
+3. `api`
+4. `webapp` and `push_to_inat`
+5. `inaturalist_server`
+
+And then if you want you can create the `dev_user` for running the `webapp` and `api` locally. Note that they depend on environment variables like the following to run locally:
 ```bash
-cdk deploy --profile=deployer -c namespace=buggy -c environment=dev
+export BUGGY_AWS_ACCESS_KEY_ID=<dev_user_access_key>
+export BUGGY_AWS_SECRET_ACCESS_KEY=<dev_user_secret>
+export BUGGY_AWS_DEFAULT_REGION=<dev_user_region>
 ```
 
-In order for certificate validation to work you need to add a NS record to the base domain `networkearth.io` with the name servers of your subdomain. To do this create a new record on the `networkearth.io` hosted zone and set the subdomain. Then set the record type as NS. Go to your subdomain's hosted zone, grab the name servers from it's NS record and add them to the new NS record you are creating. Set the TTL to 172800 and then create the record, wait for it to sync, and then give a couple minutes for the certificate validation to finish.
+Directions for each of these components can be found in the README.md files in their respectively subdirectories. s
