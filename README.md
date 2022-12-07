@@ -1,5 +1,5 @@
-# ewa-buggy-api
-API for moving Earthwise Aware Buggy records to iNaturalist
+# buggy
+Application for moving Earthwise Aware Buggy records to iNaturalist
 
 ## Building the App
 To build the app you'll need deployer credentials in your `~/.aws/credentials` file under the profile `deployer`. You'll need to build things out in a specific order:
