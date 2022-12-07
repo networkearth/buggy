@@ -16,4 +16,4 @@ export BUGGY_AWS_SECRET_ACCESS_KEY=<dev_user_secret>
 export BUGGY_AWS_DEFAULT_REGION=<dev_user_region>
 ```
 
-Directions for each of these components can be found in the README.md files in their respectively subdirectories. s
+Directions for each of these components can be found in the README.md files in their respectively subdirectories.
