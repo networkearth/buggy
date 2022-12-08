@@ -1,3 +1,7 @@
+"""
+Tests for functions used in batch job
+"""
+
 import io
 import os
 import json
@@ -12,34 +16,61 @@ from main import (
     upload_to_inat
 )
 
-class MockBotoS3Resource(object):
+class MockBotoS3Resource():
+    """
+    Standin for S3 Resource
+    """
     def __init__(self, bucket, mock_bucket):
         self.bucket = bucket
         self.mock_bucket = mock_bucket
 
+    # pylint: disable=invalid-name
     def Bucket(self, bucket):
+        """
+        Standin for grabbing a bucket
+        Checks the bucket name is as expected
+        """
         assert self.bucket == bucket
         return self.mock_bucket
 
-class MockBucket(object):
+class MockBucket():
+    """
+    Standin for a bucket
+    """
     def __init__(self, email, objects):
         self.objects = self
         self.email = email
         self._objects = objects
 
+    # pylint: disable=invalid-name
     def filter(self, Prefix):
+        """
+        Standin for the filter
+        Checks our filter matches
+        the input email
+        """
         assert self.email == Prefix
         return self._objects
 
-class MockObject(object):
+class MockObject():
+    """
+    Standin for an s3 object
+    """
     def __init__(self, content):
         self.content = content
 
     def get(self):
+        """
+        Returns a bytes io object with
+        the content we specified
+        """
         return {'Body': io.BytesIO(self.content.encode('utf-8'))}
 
 
-def test_get_job_data(mocker):
+def test_get_job_data():
+    """
+    Test for the get_job_data function
+    """
     email = 'dragon@bug.org'
     bucket = 'job-bucket'
     data1 = {
@@ -58,6 +89,7 @@ def test_get_job_data(mocker):
         MockObject(json.dumps(data1)),
         MockObject(json.dumps(data2))
     ]
+    # pylint: disable=invalid-name
     s3 = MockBotoS3Resource(
         bucket, MockBucket(
             email, objects
@@ -80,6 +112,9 @@ def test_get_job_data(mocker):
 
 @httpretty.activate
 def test_get_submissions():
+    """
+    Test for the get_submissions function
+    """
     httpretty.register_uri(
         httpretty.GET, 'http://localhost:5002/submissions',
         body=json.dumps([
@@ -103,17 +138,27 @@ def test_get_submissions():
         'kobo_uid': 'iguessiamauid', 'email': 'dragon@bug.org'
     }
 
-class MockKoboClient(object):
+class MockKoboClient():
+    """
+    Standin for the kobo client
+    """
     def __init__(self, kobo_username, kobo_password):
         self.kobo_username = kobo_username
         self.kobo_password = kobo_password
 
     def __call__(self, kobo_username, kobo_password):
+        """
+        Called on instantiation within the code
+        Checks creds are as expected
+        """
         assert self.kobo_username == kobo_username
         assert self.kobo_password == kobo_password
         return self
 
-class MockiNaturalistClient(object):
+class MockiNaturalistClient():
+    """
+    Standin for the iNaturalist client
+    """
     def __init__(
         self, inat_username, inat_password, inat_client_id,
         inat_client_secret, api_url, app_url
@@ -129,6 +174,10 @@ class MockiNaturalistClient(object):
         self, inat_username, inat_password, inat_client_id,
         inat_client_secret, api_url, app_url
     ):
+        """
+        Called on instantiation within the code
+        Checks creds are as expected
+        """
         assert self.inat_username == inat_username
         assert self.inat_password == inat_password
         assert self.inat_client_id == inat_client_id
@@ -138,6 +187,9 @@ class MockiNaturalistClient(object):
         return self
 
 def test_get_clients(mocker):
+    """
+    Test for the get_clients function
+    """
     kobo_username = 'beetlebub'
     kobo_password = 'chitinisking'
     kobo = MockKoboClient(kobo_username, kobo_password)
@@ -161,18 +213,25 @@ def test_get_clients(mocker):
     )
 
     r_kobo, r_inaturalist = get_clients(
-        kobo_username, kobo_password, inat_username, inat_password, 
+        kobo_username, kobo_password, inat_username, inat_password,
         inat_client_id, inat_client_secret, api_url, app_url
     )
 
     assert r_kobo == kobo
     assert r_inaturalist == inaturalist
 
-class MockImagePuller(object):
+class MockImagePuller():
+    """
+    Standin for iNaturalist pull image
+    """
     def __init__(self):
         self.image_store = {}
 
     def pull_image(self, image_path, kobo_uid, instance, image):
+        """
+        Stores what we asked for so we can
+        check we asked for the right things
+        """
         self.image_store[image_path] = {
             'kobo_uid': kobo_uid,
             'instance': instance,
@@ -180,6 +239,9 @@ class MockImagePuller(object):
         }
 
 def test_pull_images():
+    """
+    Test for the pull images function
+    """
     kobo_client = MockImagePuller()
     record = {
         'instance': 1,
@@ -198,11 +260,19 @@ def test_pull_images():
             'image': int(path.split('_')[-1])
         }
 
-class MockBotoS3Client(object):
+class MockBotoS3Client():
+    """
+    Standin for the s3 client
+    """
     def __init__(self):
         self.puts = []
 
+    # pylint: disable=invalid-name
     def put_object(self, Body, Bucket, Key):
+        """
+        Captures the puts we requested
+        so we can check them later
+        """
         self.puts.append(
             {
                 'body': Body,
@@ -211,23 +281,32 @@ class MockBotoS3Client(object):
             }
         )
 
-class MockInstancePuller(object):
+class MockInstancePuller():
+    """
+    Standin for a kobo pull data
+    """
     def __init__(self, kobo_uid, instance, instance_data):
         self.kobo_uid = kobo_uid
         self.instance = instance
         self.instance_data = instance_data
 
     def pull_instance(self, kobo_uid, instance):
+        """
+        Asserts we're requesting the pull
+        in the correct fashion with the right data
+        """
         assert self.kobo_uid == kobo_uid
         assert self.instance == instance
         return self.instance_data
 
 def test_backup_record():
-
+    """
+    Test for the backup_record function
+    """
     image_paths = ['test_image_1']
     for image_path in image_paths:
-        with open(image_path, 'wb') as fh:
-            fh.write(b'flowerpower')
+        with open(image_path, 'wb') as file:
+            file.write(b'flowerpower')
     try:
         kobo_uid = 'iguessiamauid'
         record = {
@@ -237,17 +316,18 @@ def test_backup_record():
         kobo_client = MockInstancePuller(
             kobo_uid, record['instance'], instance_data
         )
-        
+
+        # pylint: disable=invalid-name
         s3 = MockBotoS3Client()
         backup_bucket = 'backup-bucket'
 
         backup_record(
             kobo_client, kobo_uid, record, image_paths, s3, backup_bucket
         )
-    except Exception as e:
+    except Exception as exception:
         for image_path in image_paths:
             os.remove(image_path)
-        raise e
+        raise exception
 
     expected_puts = [
         {
@@ -263,15 +343,18 @@ def test_backup_record():
     ]
     assert s3.puts == expected_puts
 
-class MockiNaturalistUploader(object):
+class MockiNaturalistUploader():
+    """
+    Standing for the iNaturalist upload
+    """
     def __init__(
-        self, taxa, longitude, latitude, ts,
+        self, taxa, longitude, latitude, timestamp,
         positional_accuracy, notes, observation_id
     ):
         self.taxa = taxa
         self.longitude = longitude
-        self.latitude = latitude 
-        self.ts = ts
+        self.latitude = latitude
+        self.timestamp = timestamp
         self.positional_accuracy = positional_accuracy
         self.notes = notes
 
@@ -281,25 +364,39 @@ class MockiNaturalistUploader(object):
         self.field_calls = []
 
     def upload_base_observation(
-        self, taxa, longitude, latitude, ts,
+        self, taxa, longitude, latitude, timestamp,
         positional_accuracy, notes
     ):
+        """
+        Checks data is passed correctly
+        """
         assert self.taxa == taxa
         assert self.longitude == longitude
         assert self.latitude == latitude
-        assert self.ts == ts
+        assert self.timestamp == timestamp
         assert self.positional_accuracy == positional_accuracy
         assert self.notes == notes
         return self.observation_id
 
     def attach_image(self, *args):
+        """
+        Captures the calls to upload images
+        so we can check them later
+        """
         self.image_calls.append(args)
 
     def attach_observation_field(self, *args):
+        """
+        Captures the calls to upload fields
+        so we can check them later
+        """
         self.field_calls.append(args)
-    
+
 
 def test_upload_to_inat():
+    """
+    Test for the upload_to_inat function
+    """
     observation_id = 2
     record = {
         'taxa': 123847,
@@ -314,11 +411,11 @@ def test_upload_to_inat():
         }
     }
     inaturalist_client = MockiNaturalistUploader(
-        record['taxa'], record['longitude'], record['latitude'], 
-        record['ts'], record['positional_accuracy'], record['notes'], 
+        record['taxa'], record['longitude'], record['latitude'],
+        record['ts'], record['positional_accuracy'], record['notes'],
         observation_id
     )
-    
+
     image_paths = ['test_image_1']
 
     upload_to_inat(inaturalist_client, record, image_paths)

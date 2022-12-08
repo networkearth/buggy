@@ -33,3 +33,8 @@ jobs:
         cd api
         pylint --rcfile standard.rc $(git ls-files '*.py')
         cd ..
+    - name: Analysing the push to inat with pylint
+      run: |
+        cd push_to_inat
+        pylint --rcfile standard.rc $(git ls-files '*.py')
+        cd ..
