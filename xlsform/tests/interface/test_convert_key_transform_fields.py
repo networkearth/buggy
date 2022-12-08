@@ -19,7 +19,6 @@ def test_effort(survey):
         survey, 'session_info', 'Survey_duration',
         allowed_types=('integer',)
     )
-    assert False
 
 def test_quantity(survey):
     """
