@@ -7,3 +7,4 @@ cd ../../xlsform
 python -m pytest
 cd ../push_to_inat/scripts
 python -m pytest
+cd ../
