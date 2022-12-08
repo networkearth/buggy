@@ -1,9 +1,17 @@
-import httpretty
-import json
+"""
+Tests for the /submissions endpoint
+"""
+
 import re
+import json
+import httpretty
+
 
 @httpretty.activate
 def test_view_w_login(client):
+    """
+    Tests that submissions works as expected when someone is logged in
+    """
     with client.session_transaction() as session:
         session['_user_id'] = 'dragon@bug.org sixlegsisbest'
 
@@ -18,7 +26,7 @@ def test_view_w_login(client):
             }
         ])
     )
-    
+
     response = client.get('/submissions')
 
     assert json.loads(httpretty.last_request().body.decode('utf-8')) == {
@@ -26,15 +34,42 @@ def test_view_w_login(client):
         'kobo_username': 'beetlebub', 'kobo_uid': 'iguessiamauid'
     }
     assert response.status_code == 200
-    assert '<img src="/image/12/1" class="rounded float-left" style="height: 100px">' in response.data.decode('utf-8')
-    assert '<img src="/image/12/2" class="rounded float-left" style="height: 100px">' not in response.data.decode('utf-8')
-    assert '<img src="/image/32/4" class="rounded float-left" style="height: 100px">' in response.data.decode('utf-8')
-    assert '<img src="/image/32/20" class="rounded float-left" style="height: 100px">' not in response.data.decode('utf-8')
-    
-    assert re.search(r'<label class="form-check-label" for="flexCheckChecked">\s*12\s*<\/label>', response.data.decode('utf-8')) is not None
-    assert re.search(r'<label class="form-check-label" for="flexCheckChecked">\s*32\s*<\/label>', response.data.decode('utf-8')) is not None
+    assert (
+        '<img src="/image/12/1" class="rounded float-left" style="height: 100px">'
+        in response.data.decode('utf-8')
+    )
+    assert (
+        '<img src="/image/12/2" class="rounded float-left" style="height: 100px">'
+        not in response.data.decode('utf-8')
+    )
+    assert (
+        '<img src="/image/32/4" class="rounded float-left" style="height: 100px">'
+        in response.data.decode('utf-8')
+    )
+    assert (
+        '<img src="/image/32/20" class="rounded float-left" style="height: 100px">'
+        not in response.data.decode('utf-8')
+    )
+
+    assert (
+        re.search(
+            r'<label class="form-check-label" for="flexCheckChecked">\s*12\s*<\/label>',
+            response.data.decode('utf-8')
+        )
+        is not None
+    )
+    assert (
+        re.search(
+            r'<label class="form-check-label" for="flexCheckChecked">\s*32\s*<\/label>',
+            response.data.decode('utf-8')
+        )
+        is not None
+    )
 
 def test_view_wo_login(client):
+    """
+    Tests that submissions redirects to login when no one is logged in
+    """
     response = client.get('/submissions', follow_redirects=True)
     assert response.history[0].status_code == 302
     assert response.status_code == 200
@@ -42,6 +77,9 @@ def test_view_wo_login(client):
     assert response.request.query_string.decode('utf-8') == 'next=%2Fsubmissions'
 
 def test_view_wo_api(client):
+    """
+    Tests that submissions returns a 500 when the api is unreachable
+    """
     with client.session_transaction() as session:
         session['_user_id'] = 'dragon@bug.org sixlegsisbest'
 
@@ -50,6 +88,9 @@ def test_view_wo_api(client):
 
 @httpretty.activate
 def test_post(client):
+    """
+    Tests that a POST submits a job as expected
+    """
     with client.session_transaction() as session:
         session['_user_id'] = 'dragon@bug.org sixlegsisbest'
 
@@ -88,6 +129,9 @@ def test_post(client):
     }
 
 def test_post_wo_api(client):
+    """
+    Tests that a POST returns 500 when the api is unreachable
+    """
     with client.session_transaction() as session:
         session['_user_id'] = 'dragon@bug.org sixlegsisbest'
 

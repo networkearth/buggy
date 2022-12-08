@@ -1,13 +1,20 @@
-import boto3
-import json
+"""
+App Factory
+"""
 
-from flask import Flask
+import json
+import boto3
+
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+from flask import Flask
 
 bootstrap = Bootstrap()
 
 def create_app(environment, namespace, account, region, api_url):
+    """
+    App Factory
+    """
     app = Flask(__name__)
 
     app.config['ENVIRONMENT'] = environment
@@ -15,6 +22,7 @@ def create_app(environment, namespace, account, region, api_url):
     app.config['ACCOUNT'] = account
     app.config['REGION'] = region
 
+    # pylint: disable=invalid-name
     SECRETS = {
         'INATURALIST_API_URL': {
             'secret_id': 'inaturalist',
@@ -70,15 +78,19 @@ def create_app(environment, namespace, account, region, api_url):
     login_manager.login_view = 'auth.login_view'
     login_manager.init_app(app)
 
+    # pylint: disable=import-outside-toplevel
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
+    # pylint: disable=import-outside-toplevel
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # pylint: disable=import-outside-toplevel
     from .models import User
 
     @login_manager.user_loader
+    # pylint: disable=redefined-builtin,invalid-name
     def load_user(id):
         return User(id)
 

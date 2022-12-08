@@ -1,18 +1,31 @@
-import pytest
+"""
+Global Configuration for XLSForm Tests
+"""
+
 import json
+import pytest
 
 @pytest.fixture()
 def choices():
-    with open('xlsform/choices.json', 'r') as fh:
-        return json.load(fh)
+    """
+    Loads the choices json as a dict
+    """
+    with open('xlsform/choices.json', 'r', encoding="utf8") as file:
+        return json.load(file)
 
 @pytest.fixture()
 def settings():
-    with open('xlsform/settings.json', 'r') as fh:
-        return json.load(fh)
+    """
+    Loads the settings json as a dict
+    """
+    with open('xlsform/settings.json', 'r', encoding="utf8") as file:
+        return json.load(file)
 
 @pytest.fixture()
 def survey():
-    with open('xlsform/survey.json', 'r') as fh:
-        return json.load(fh)
-    
+    """
+    Loads the survey json as a dict
+    """
+    with open('xlsform/survey.json', 'r', encoding="utf8") as file:
+        return json.load(file)
+   
