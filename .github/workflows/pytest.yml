@@ -24,3 +24,21 @@ jobs:
         pip install -r requirements.txt
         python -m pytest
         cd ..
+    - name: Testing the webapp
+      run: |
+        cd webapp/flask
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..
+    - name: Testing the api
+      run: |
+        cd api/flask
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..
+    - name: Testing the push to inat
+      run: |
+        cd push_to_inat/scripts
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..
