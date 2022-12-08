@@ -1,3 +1,7 @@
+"""
+Test that we have the fields needed for the webapp
+"""
+
 from project.transformers.transformers import BUGGY_TRANSFORMERS
 
 EXAMPLE_RECORDS = [
@@ -16,7 +20,10 @@ EXAMPLE_RECORDS = [
     }
 ]
 
-def test_inaturalist_field_present():
+def test_webapp_fields_present():
+    """
+    Test that we have the fields needed for the webapp
+    """
     for entry in EXAMPLE_RECORDS:
         transformed = {}
         for transformer in BUGGY_TRANSFORMERS:

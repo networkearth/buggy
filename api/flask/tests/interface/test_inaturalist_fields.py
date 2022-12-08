@@ -1,3 +1,7 @@
+"""
+Test that we have the fields needed for iNaturalist
+"""
+
 from project.transformers.transformers import BUGGY_TRANSFORMERS
 
 EXAMPLE_RECORDS = [
@@ -17,6 +21,9 @@ EXAMPLE_RECORDS = [
 ]
 
 def test_inaturalist_field_present():
+    """
+    Test that we have the fields needed for iNaturalist
+    """
     for entry in EXAMPLE_RECORDS:
         transformed = {}
         for transformer in BUGGY_TRANSFORMERS:
@@ -24,6 +31,6 @@ def test_inaturalist_field_present():
             transformed[key] = value
         assert not set([
             'taxa', 'longitude', 'latitude', 'ts',
-            'positional_accuracy', 'notes', 
+            'positional_accuracy', 'notes',
             'observation_fields', 'images'
         ]) - set(transformed.keys())

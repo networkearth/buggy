@@ -1,9 +1,16 @@
+"""
+/submissions endpoint
+"""
+
 from flask_restful import Resource, reqparse
 from gluon.kobo import client
 
 from ..transformers import transformers
 
 class Submissions(Resource):
+    """
+    /submissions endpoint
+    """
     get_parser = reqparse.RequestParser()
     get_parser.add_argument(
         'kobo_username',
@@ -31,6 +38,9 @@ class Submissions(Resource):
     )
 
     def get(self):
+        """
+        GET /submissions
+        """
         kwargs = Submissions.get_parser.parse_args()
         kobo = client.KoboClient(kwargs['kobo_username'], kwargs['kobo_password'])
         email = kwargs['email'].strip()
@@ -44,6 +54,7 @@ class Submissions(Resource):
                     key, value = transformer(entry)
                     transformed[key] = value
                 transformed_data.append(transformed)
+            # pylint: disable=broad-except
             except Exception:
                 failed += 1
         transformed_data = list(filter(lambda x: x['email'] == email, transformed_data))

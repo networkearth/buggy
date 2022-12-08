@@ -1,3 +1,7 @@
+"""
+Transformers for turning Kobo data into iNaturalist data
+"""
+
 from functools import partial
 
 OBSERVATION_FIELD_IDS = {
@@ -13,14 +17,28 @@ OBSERVATION_FIELD_IDS = {
     "EwA - Wet Host": 16000,
 }
 
-def mapping_transform(entry_key: str, output_key: str, mapping: dict, default, entry: dict, **kwargs) -> tuple:
+# pylint: disable=unused-argument
+def mapping_transform(
+    entry_key: str, output_key: str, mapping: dict,
+    default, entry: dict, **kwargs
+) -> tuple:
+    """
+    Maps one value from kobo into a value for iNaturalist
+    """
     return output_key, mapping.get(entry.get(entry_key), default)
 
-def convert_key_transform(entry_key: str, output_key: str, type, default, entry: dict, **kwargs) -> tuple:
+# pylint: disable=unused-argument,redefined-builtin
+def convert_key_transform(
+    entry_key: str, output_key: str, type,
+    default, entry: dict, **kwargs
+) -> tuple:
+    """
+    Just updates the key that will be seen by iNaturalist
+    """
     return output_key, type(entry.get(entry_key, default))
 
 survey_transform = partial(
-    mapping_transform, 
+    mapping_transform,
     "session_info/survey_method",
     OBSERVATION_FIELD_IDS["EwA - Survey Method"],
     {
@@ -171,19 +189,26 @@ OBSERVATION_FIELD_TRANSFORMERS = [
 ]
 
 def observation_field_transformer(transformers: list, entry: dict, **kwargs) -> tuple:
+    """
+    Builds the observation field list
+    """
     observation_fields = {}
     for transformer in transformers:
         key, value = transformer(entry, **kwargs)
         observation_fields[key] = value
     return "observation_fields", observation_fields
 
+# pylint: disable=unused-argument
 def image_transformer(image_fields, entry: dict, **kwargs) -> tuple:
+    """
+    Builds the image list
+    """
     attachments = {
         info["filename"].split("/")[-1]: info
         for info in entry["_attachments"]
     }
     order = [
-        entry[field] 
+        entry[field]
         for field in image_fields
         if entry.get(field)
     ]
@@ -193,19 +218,36 @@ def image_transformer(image_fields, entry: dict, **kwargs) -> tuple:
     ]
     return "images", image_info
 
+# pylint: disable=unused-argument
 def longitude_transform(entry: dict, **kwargs) -> tuple:
+    """
+    Gets longitude
+    """
     return 'longitude', entry['_geolocation'][1]
 
+# pylint: disable=unused-argument
 def latitude_transform(entry: dict, **kwargs) -> tuple:
+    """
+    Gets latitude
+    """
     return 'latitude', entry['_geolocation'][0]
 
+# pylint: disable=unused-argument
 def accuracy_transform(entry: dict, **kwargs) -> tuple:
+    """
+    Gets positional accuracy
+    """
     return 'positional_accuracy', float(entry['session_info/location'].strip().split(' ')[-1])
 
+# pylint: disable=unused-argument
 def notes_transform(sections: dict, order: list, entry: dict, **kwargs) -> tuple:
-    
+    """
+    Gets the notes from the various free form
+    text inputs
+    """
+
     assert set(sections) == set(order)
-    
+
     notes = ""
     for field in order:
         header = sections[field]
@@ -217,8 +259,17 @@ def notes_transform(sections: dict, order: list, entry: dict, **kwargs) -> tuple
             ])
     return "notes", notes.strip()
 
+# pylint: disable=unused-argument
 def is_valid_transform(entry: dict, **kwargs) -> tuple:
-    return "is_valid", entry.get("_validation_status", {}).get("uid") == "validation_status_approved"
+    """
+    Determines whether this record has been
+    marked as valid in kobo
+    """
+    return (
+        "is_valid",
+        entry.get("_validation_status", {}).get("uid")
+        == "validation_status_approved"
+    )
 
 BUGGY_TRANSFORMERS = [
     partial(observation_field_transformer, OBSERVATION_FIELD_TRANSFORMERS),
@@ -277,4 +328,4 @@ BUGGY_TRANSFORMERS = [
         "_id", "instance", int, None
     ),
     is_valid_transform
-]   
+]

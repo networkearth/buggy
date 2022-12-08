@@ -1,8 +1,11 @@
-import unittest
-import httpretty
-import json
+"""
+Tests the transformers
+"""
 
+import unittest
 from functools import partial
+import json
+import httpretty
 
 from project.transformers.transformers import (
     notes_transform,
@@ -13,13 +16,22 @@ from project.transformers.transformers import (
 )
 
 def register_token_url():
+    """
+    Register the url used for grabbing tokens from kobo
+    """
     httpretty.register_uri(
         httpretty.GET, "https://kf.kobotoolbox.org/token?format=json",
         body=json.dumps({"token": "what are you token about?"})
     )
 
 class TestMappingTransform(unittest.TestCase):
+    """
+    Tests for the mapping transform
+    """
     def setUp(self):
+        """
+        Setup a transformer
+        """
         entry_key = "survey_field"
         output_key = "output_field"
         mapping = {
@@ -32,16 +44,31 @@ class TestMappingTransform(unittest.TestCase):
         )
 
     def test_entry_key_present(self):
+        """
+        Tests case where the entry key is present
+        """
         assert self.transformer({"survey_field": "good_value"}) == ("output_field", "good")
 
     def test_entry_key_missing(self):
+        """
+        Tests case where the entry key is not present
+        """
         assert self.transformer({}) == ("output_field", "missing")
 
     def test_mapping_key_missing(self):
+        """
+        Tests case where the mapping key is not present
+        """
         assert self.transformer({"survey_field": "bad_value"}) == ("output_field", "missing")
 
 class TestConvertKeyTransform(unittest.TestCase):
+    """
+    Tests for the convert key transform
+    """
     def setUp(self):
+        """
+        Setup a transformer
+        """
         entry_key = "survey_field"
         output_key = "output_field"
         default = "missing"
@@ -51,13 +78,25 @@ class TestConvertKeyTransform(unittest.TestCase):
         )
 
     def test_entry_key_present(self):
+        """
+        Tests when then entry key is present
+        """
         assert self.transformer({"survey_field": "good_value"}) == ("output_field", "good_value")
 
     def test_entry_key_missing(self):
+        """
+        Tests when then entry key is not present
+        """
         assert self.transformer({}) == ("output_field", "missing")
 
 class TestObservationFieldTransformer(unittest.TestCase):
+    """
+    Tests for the observation field transformer
+    """
     def test_base_case(self):
+        """
+        Base case
+        """
         observation_field_transformers = [
             partial(
                 convert_key_transform,
@@ -75,6 +114,11 @@ class TestObservationFieldTransformer(unittest.TestCase):
         assert result == ('observation_fields', {"output_field": "good_value"})
 
     def test_kwargs_passed(self):
+        """
+        Tests kwargs are passed through the transformer
+        correctly
+        """
+        # pylint: disable=unused-argument
         def transformer(entry: dict, **kwargs) -> tuple:
             return "field", kwargs["to_pass"]
         observation_field_transformers = [
@@ -83,12 +127,20 @@ class TestObservationFieldTransformer(unittest.TestCase):
         entry = {
             "survey_field": "good_value"
         }
-        result = observation_field_transformer(observation_field_transformers, entry, to_pass="check for me")
+        result = observation_field_transformer(
+            observation_field_transformers, entry, to_pass="check for me"
+        )
 
         assert result == ('observation_fields', {"field": "check for me"})
 
 class TestImageTransformer(unittest.TestCase):
+    """
+    Tests for the image transformer
+    """
     def test_base_case(self):
+        """
+        Base case
+        """
         entry = {
             "photo1": "bug.png",
             "photo3": "plant.png",
@@ -126,7 +178,13 @@ My Notes:
 Hello there!
 """.strip()
 class TestNotesTransform(unittest.TestCase):
+    """
+    Tests for the notes transformer
+    """
     def test_base_case(self):
+        """
+        Base case
+        """
         entry = {
             "my note": "Hello there!",
             "postscript": "I had a great time. :)"
@@ -149,8 +207,3 @@ class TestNotesTransform(unittest.TestCase):
         print(transformed)
         assert key == "notes"
         assert transformed == NOTE
-
-class FakeIdentifier(object):
-    @staticmethod
-    def get_identifier(user_id):
-        return "a user id"
