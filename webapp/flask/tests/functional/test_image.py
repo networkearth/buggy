@@ -1,8 +1,15 @@
-import httpretty
+"""
+Tests for the /image endpoint
+"""
+
 import json
+import httpretty
 
 @httpretty.activate
 def test_w_login(client):
+    """
+    Tests endpoint works properly when someone is logged in
+    """
     with client.session_transaction() as sesh:
         sesh['_user_id'] = 'dragon@bug.org sixlegsisbest'
 
@@ -22,6 +29,9 @@ def test_w_login(client):
     }
 
 def test_wo_login(client):
+    """
+    Tests endpoint redirects when someone is not logged in
+    """
     response = client.get('/image/32/4', follow_redirects=True)
     assert response.history[0].status_code == 302
     assert response.status_code == 200
@@ -29,6 +39,9 @@ def test_wo_login(client):
     assert response.request.query_string.decode('utf-8') == 'next=%2Fimage%2F32%2F4'
 
 def test_wo_api(client):
+    """
+    Tests we get a 500 when api is not reachable
+    """
     with client.session_transaction() as sesh:
         sesh['_user_id'] = 'dragon@bug.org sixlegsisbest'
 

@@ -1,0 +1,44 @@
+name: Pytest
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+    - name: Testing the xlsform
+      run: |
+        cd xlsform
+        pip install -r requirements.txt
+        python -m pytest
+        cd ..
+    - name: Testing the webapp
+      run: |
+        cd webapp/flask
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..
+    - name: Testing the api
+      run: |
+        cd api/flask
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..
+    - name: Testing the push to inat
+      run: |
+        cd push_to_inat/scripts
+        pip install -r requirements.txt
+        python -m pytest
+        cd ../..

@@ -1,5 +1,8 @@
+"""
+Role Stack
+"""
+
 from aws_cdk import (
-    aws_s3 as s3,
     aws_iam as iam,
     aws_secretsmanager as secrets,
     Stack
@@ -8,6 +11,10 @@ from aws_cdk import (
 from constructs import Construct
 
 class RoleStack(Stack):
+    """
+    Role Stack
+    """
+    # pylint: disable=redefined-builtin,invalid-name
     def __init__(self, scope: Construct, id: str, conf: dict, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 

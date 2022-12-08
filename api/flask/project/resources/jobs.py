@@ -1,11 +1,18 @@
+"""
+/job endpoint
+"""
+
 import json
+from time import time
 import boto3
 
-from flask import current_app
 from flask_restful import Resource, reqparse
-from time import time
+from flask import current_app
 
 class Job(Resource):
+    """
+    /job endpoint
+    """
     parser = reqparse.RequestParser()
     parser.add_argument(
         'kobo_username',
@@ -57,12 +64,15 @@ class Job(Resource):
     )
 
     def post(self):
+        """
+        POST /job
+        """
         kwargs = Job.parser.parse_args()
         key = f'{kwargs["inaturalist_email"]}-{int(time())}.json'
         data = {
             'instances': [
-                int(instance.strip()) 
-                for instance in kwargs['instances'].split(',') 
+                int(instance.strip())
+                for instance in kwargs['instances'].split(',')
                 if instance.strip()
             ],
             'inaturalist_email': kwargs['inaturalist_email'],
@@ -74,6 +84,7 @@ class Job(Resource):
             'kobo_uid': kwargs['kobo_uid']
         }
 
+        # pylint: disable=invalid-name
         s3 = boto3.client('s3')
         s3.put_object(
             Body=json.dumps(data, indent=4, sort_keys=True),
@@ -84,8 +95,10 @@ class Job(Resource):
         email = kwargs['inaturalist_email']
         batch = boto3.client('batch')
         batch.submit_job(
+            # pylint: disable=line-too-long
             jobQueue=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-queue/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
-            jobName=f'pushtoinat',
+            jobName='pushtoinat',
+            # pylint: disable=line-too-long
             jobDefinition=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-definition/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
             containerOverrides={
                 'command': [

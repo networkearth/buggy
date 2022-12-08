@@ -1,8 +1,15 @@
-from flask import make_response
+"""
+/image endpoint
+"""
+
 from flask_restful import Resource, reqparse
 from gluon.kobo import client as kobo_client
+from flask import make_response
 
 class Image(Resource):
+    """
+    /image endpoint
+    """
     parser = reqparse.RequestParser()
     parser.add_argument(
         'kobo_username',
@@ -36,6 +43,9 @@ class Image(Resource):
     )
 
     def get(self):
+        """
+        GET /image
+        """
         kwargs = Image.parser.parse_args()
         client = kobo_client.KoboClient(kwargs['kobo_username'], kwargs['kobo_password'])
         image_content = client.pull_image_bytes(

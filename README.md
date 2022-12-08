@@ -17,3 +17,9 @@ export BUGGY_AWS_DEFAULT_REGION=<dev_user_region>
 ```
 
 Directions for each of these components can be found in the README.md files in their respectively subdirectories.
+
+## Running Tests and Linting
+```bash
+./run_tests.sh
+./run_linter.sh
+```

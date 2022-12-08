@@ -1,3 +1,7 @@
+"""
+Service Stack
+"""
+
 from aws_cdk import (
     aws_ecs as ecs,
     aws_ecr as ecr,
@@ -11,6 +15,10 @@ from aws_cdk import (
 from constructs import Construct
 
 class ServiceStack(Stack):
+    """
+    Service Stack
+    """
+    # pylint: disable=redefined-builtin,invalid-name
     def __init__(self, scope: Construct, id: str, conf: dict, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
@@ -22,7 +30,7 @@ class ServiceStack(Stack):
         )
 
         service_name = '-'.join([conf['stage'], conf['name']])
-        service = patterns.ApplicationLoadBalancedFargateService(
+        patterns.ApplicationLoadBalancedFargateService(
             self, service_name,
             memory_limit_mib=512, cpu=256, desired_count=1,
             task_image_options=patterns.ApplicationLoadBalancedTaskImageOptions(

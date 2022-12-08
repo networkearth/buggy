@@ -1,3 +1,7 @@
+"""
+Batch Job Stack
+"""
+
 from aws_cdk import (
     aws_ecr as ecr,
     aws_batch as batch,
@@ -9,11 +13,15 @@ from aws_cdk import (
 from constructs import Construct
 
 class BatchJobStack(Stack):
+    """
+    Batch Job Stack
+    """
+    # pylint: disable=invalid-name,redefined-builtin
     def __init__(self, scope: Construct, id: str, conf: dict, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         repository_name = '-'.join([conf['stage'], conf['name']])
-        repository = ecr.CfnRepository(
+        ecr.CfnRepository(
             self, repository_name + '-ecr',
             repository_name=repository_name
         )
@@ -29,10 +37,13 @@ class BatchJobStack(Stack):
         )
 
         container_properties = batch.CfnJobDefinition.ContainerPropertiesProperty(
+            # pylint: disable=line-too-long
             image=f"{conf['account']}.dkr.ecr.{conf['region']}.amazonaws.com/{conf['stage']}-{conf['name']}:latest",
             resource_requirements=[vcpu_property, memory_property],
+            # pylint: disable=line-too-long
             execution_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['stage']}-{conf['name']}",
             job_role_arn=f"arn:aws:iam::{conf['account']}:role/{conf['stage']}-{conf['name']}",
+            # pylint: disable=line-too-long
             fargate_platform_configuration=batch.CfnJobDefinition.FargatePlatformConfigurationProperty(
                 platform_version="1.4.0"
             ),
@@ -42,7 +53,7 @@ class BatchJobStack(Stack):
         )
 
         batch_job_name = '-'.join([conf['stage'], conf['name']])
-        batch_job = batch.CfnJobDefinition(
+        batch.CfnJobDefinition(
             self, batch_job_name,
             job_definition_name=batch_job_name,
             type='container',

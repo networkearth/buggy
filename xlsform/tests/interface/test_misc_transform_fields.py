@@ -1,15 +1,28 @@
+"""
+Tests for misc transforms fields
+"""
+
 def get_question(survey, page, question):
+    """
+    Grabs a specific question from the survey info
+    """
     page = next(component for component in survey if component['name'] == page)
     assert page['type'] == 'begin_group'
     return next(component for component in page['survey'] if component['name'] == question)
 
 def test_accuracy(survey):
+    """
+    Test for accuracy transformer
+    """
     question = get_question(
         survey, 'session_info', 'location'
     )
     assert question['type'] == 'geopoint'
 
 def test_notes(survey):
+    """
+    Test for notes transformer
+    """
     paths = [
         'session_info/survey_method_other',
         'arthropod_documentation/arthropod_group_other',
@@ -26,6 +39,9 @@ def test_notes(survey):
         assert question['type'] == 'text'
 
 def test_image(survey):
+    """
+    Test for image transformer
+    """
     paths = [
         'arthropod_documentation/arthropod_photo_1',
         'arthropod_documentation/arthropod_photo_2',

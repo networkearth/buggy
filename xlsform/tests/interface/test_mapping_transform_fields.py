@@ -1,4 +1,11 @@
+"""
+Tests for mapping transforms fields
+"""
+
 def mapping_transform_test(survey, choices, page, question, expected_options):
+    """
+    Generic test for fields involved in mapping transforms
+    """
     page = next(component for component in survey if component['name'] == page)
     assert page['type'] == 'begin_group'
     question = next(component for component in page['survey'] if component['name'] == question)
@@ -8,8 +15,11 @@ def mapping_transform_test(survey, choices, page, question, expected_options):
     assert options == set(expected_options)
 
 def test_survey(survey, choices):
+    """
+    Test for survey method transformer
+    """
     mapping_transform_test(
-        survey, choices, 'session_info', 'survey_method', 
+        survey, choices, 'session_info', 'survey_method',
         [
             'incidental',
             'walking',
@@ -20,6 +30,9 @@ def test_survey(survey, choices):
     )
 
 def test_development(survey, choices):
+    """
+    Test for development transformer
+    """
     mapping_transform_test(
         survey, choices, 'arthropod_documentation',
         'developmental_stage',
@@ -34,6 +47,9 @@ def test_development(survey, choices):
     )
 
 def test_activity(survey, choices):
+    """
+    Test for activity transformer
+    """
     mapping_transform_test(
         survey, choices, 'arthropod_documentation',
         'activity',
@@ -54,6 +70,9 @@ def test_activity(survey, choices):
     )
 
 def test_host_phenology(survey, choices):
+    """
+    Test for phenology transformer
+    """
     mapping_transform_test(
         survey, choices, 'host_documentation',
         'host_phenology',
@@ -69,6 +88,9 @@ def test_host_phenology(survey, choices):
     )
 
 def test_arthropod_taxa(survey, choices):
+    """
+    Test for arthropod taxa transformer
+    """
     mapping_transform_test(
         survey, choices, 'arthropod_documentation',
         'arthropod_group',
@@ -93,6 +115,9 @@ def test_arthropod_taxa(survey, choices):
     )
 
 def test_host_taxa(survey, choices):
+    """
+    Test for host taxa transformer
+    """
     mapping_transform_test(
         survey, choices, 'host_documentation',
         'host_group',
