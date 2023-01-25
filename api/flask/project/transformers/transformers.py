@@ -63,7 +63,7 @@ development_transform = partial(
         "nymph": "Nymph",
         "other": "Other"
     },
-    "Other"
+    "null"
 )
 
 activity_transform = partial(
@@ -84,7 +84,7 @@ activity_transform = partial(
         "cleaning": "Cleaning",
         "vigilant": "Vigilant"
     },
-    "Other"
+    "null"
 )
 
 host_phenology_transform = partial(
@@ -100,7 +100,7 @@ host_phenology_transform = partial(
         "mature": "Leaves",
         "other": "Other"
     },
-    "Other"
+    "null"
 )
 
 effort_transform = partial(
