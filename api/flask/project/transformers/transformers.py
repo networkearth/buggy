@@ -13,8 +13,7 @@ OBSERVATION_FIELD_IDS = {
     "EwA - Plant Phenology": 14016,
     "EwA - Quantity": 12629,
     "EwA - Survey Method": 12552,
-    # Need Real IDs
-    "EwA - Wet Host": 16000,
+    "EwA - Wet Host": 16032,
 }
 
 # pylint: disable=unused-argument
@@ -63,7 +62,7 @@ development_transform = partial(
         "nymph": "Nymph",
         "other": "Other"
     },
-    "Other"
+    "null"
 )
 
 activity_transform = partial(
@@ -84,7 +83,7 @@ activity_transform = partial(
         "cleaning": "Cleaning",
         "vigilant": "Vigilant"
     },
-    "Other"
+    "null"
 )
 
 host_phenology_transform = partial(
@@ -100,7 +99,7 @@ host_phenology_transform = partial(
         "mature": "Leaves",
         "other": "Other"
     },
-    "Other"
+    "null"
 )
 
 effort_transform = partial(

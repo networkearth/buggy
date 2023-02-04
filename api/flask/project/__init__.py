@@ -11,6 +11,7 @@ from flask import Flask
 from .resources.submissions import Submissions
 from .resources.image import Image
 from .resources.jobs import Job
+from .resources.index import Index
 
 def create_app(environment, namespace, account, region):
     """
@@ -60,5 +61,6 @@ def create_app(environment, namespace, account, region):
     api.add_resource(Submissions, '/submissions')
     api.add_resource(Image, '/image')
     api.add_resource(Job, '/job')
+    api.add_resource(Index, '/') # this is for the ECS healthcheck
 
     return app

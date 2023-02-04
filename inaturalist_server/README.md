@@ -237,3 +237,6 @@ You can test the image with:
 ```bash
 docker run --add-host=host.docker.internal:host-gateway -p 4000:4000 inaturalist_api/latest
 ```
+
+## Trying it Out
+Photos, unfortunately assume you're using localhost. Therefore you have to access your server at a localhost url (through port forwarding) in order to see any photos pop up.

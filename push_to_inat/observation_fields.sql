@@ -7,8 +7,7 @@ delete from observation_fields where id in (
     14016,
     12629,
     12552,
-    16000,
-    16001
+    16032
 );
 insert into observation_fields (
 	id,
@@ -66,14 +65,8 @@ values
     1
 ),
 (
-    16000,
+    16032,
     'EwA - Wet Host',
     'text',
     1
-),
-(
-    16001,
-    'EwA - Observer Code',
-    'text',
-    1
-);
+)

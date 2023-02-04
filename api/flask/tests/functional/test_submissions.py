@@ -105,6 +105,7 @@ def test_kobo_fails(client, mocker):
 
     assert response.status_code == 200
 
+    # pylint: disable=broad-exception-raised
     def raise_exception(*args):
         raise Exception()
 

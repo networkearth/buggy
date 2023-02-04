@@ -114,7 +114,6 @@ def backup_record(kobo, kobo_uid, record, image_paths, s3, backup_bucket):
                 Bucket=backup_bucket,
                 Key='/'.join([str(kobo_uid), str(instance), image_path.split('_')[-1] + '.jpg'])
             )
-        os.remove(image_path)
 
 def upload_to_inat(inaturalist, record, image_paths):
     """
