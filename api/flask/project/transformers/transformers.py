@@ -13,8 +13,7 @@ OBSERVATION_FIELD_IDS = {
     "EwA - Plant Phenology": 14016,
     "EwA - Quantity": 12629,
     "EwA - Survey Method": 12552,
-    # Need Real IDs
-    "EwA - Wet Host": 16000,
+    "EwA - Wet Host": 16032,
 }
 
 # pylint: disable=unused-argument
