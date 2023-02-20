@@ -176,6 +176,18 @@ host_taxa_transform = partial(
     None
 )
 
+def assign_protocol(entry: dict, **kwargs) -> tuple:
+    """
+    Set this to the buggy protocol
+    """
+    return 15871, 'EwA Buggy'
+
+def set_reviewed_false(entry: dict, **kwargs) -> tuple:
+    """
+    Set the reviewed state of this observation to false
+    """
+    return 15872, 'No'
+
 OBSERVATION_FIELD_TRANSFORMERS = [
     survey_transform,
     development_transform,
@@ -184,7 +196,9 @@ OBSERVATION_FIELD_TRANSFORMERS = [
     quantity_transform,
     length_transform,
     wetness_transform,
-    host_taxa_transform
+    host_taxa_transform,
+    assign_protocol,
+    set_reviewed_false
 ]
 
 def observation_field_transformer(transformers: list, entry: dict, **kwargs) -> tuple:
