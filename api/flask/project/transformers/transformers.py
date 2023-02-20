@@ -197,17 +197,24 @@ def observation_field_transformer(transformers: list, entry: dict, **kwargs) -> 
         observation_fields[key] = value
     return "observation_fields", observation_fields
 
+def extract_kobo_image_root(file_name: str) -> str:
+    """
+    Gets the root file and replaces whitespace with underscores
+    """
+    root = file_name.split("/")[-1]
+    return '_'.join([e for e in root.split(' ') if e])
+
 # pylint: disable=unused-argument
 def image_transformer(image_fields, entry: dict, **kwargs) -> tuple:
     """
     Builds the image list
     """
     attachments = {
-        info["filename"].split("/")[-1]: info
+        extract_kobo_image_root(info["filename"]): info
         for info in entry["_attachments"]
     }
     order = [
-        entry[field]
+        extract_kobo_image_root(entry[field])
         for field in image_fields
         if entry.get(field)
     ]
