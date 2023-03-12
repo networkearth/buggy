@@ -4,8 +4,6 @@ Code for uploading to iNaturalist and keeping a backup
 
 import os
 import json
-import boto3
-import requests
 
 from gluon.inaturalist import client as inaturalist_client
 from gluon.kobo import client as kobo_client

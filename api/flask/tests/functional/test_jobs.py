@@ -97,39 +97,26 @@ def test_normal_post(client, mocker):
         12, 45, 113
     ]
     data = json.dumps(data, indent=4, sort_keys=True)
-    bucket = 'buggy-test-job'
-
-    switch = MockBotoSwitch(
-        {
-            's3': MockBotoS3Client(
-                data, bucket, email
-            ),
-            'batch': MockBotoBatchClient(
-                'us-east-1', '575101084097', 'buggy-test-push-to-inat',
-                'buggy-test-push-to-inat', 'pushtoinat',
-                [
-                    '-e',
-                    email,
-                    '-b',
-                    bucket,
-                    '-bb',
-                    'buggy-test-backup',
-                    '-ia',
-                    'https://api.fakeinaturalist.org/v1',
-                    '-iw',
-                    'https://www.fakeinaturalist.org'
-                ]
-            )
-        }
-    )
 
     mocker.patch(
-        "boto3.client",
-        switch
+        'project.submissions.submissions.get_submissions',
+        return_value=[
+            {'instance': 13}, {'instance': 12}, {'instance': 45}
+        ]
+    )
+
+    mocked_upload = mocker.patch(
+        'project.uploaders.uploaders.upload_submissions'
     )
 
     response = client.post('/job', json=payload)
     assert response.status_code == 201
+    mocked_upload.assert_called_once_with(
+        [{'instance': 12}, {'instance': 45}], 
+        'my-backup-path', 'beetlebub', 'chitinisking', 'iguessiamauid', 
+        'beetle@bug.org', 'sixlegsdabest', 'iamaclientid', 'iamasecret', 
+        'http://api', 'http://webapp'
+    )
 
 def test_bad_inputs_post(client):
     """

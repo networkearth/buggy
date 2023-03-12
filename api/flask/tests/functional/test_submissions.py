@@ -51,7 +51,7 @@ def test_normal_get(client, mocker):
         'kobo_username': 'beetlebub',
         'kobo_password': 'chitinisking',
         'kobo_uid': 'iguessthisisauid',
-        'email': 'beetle@bug.org'
+        'inaturalist_email': 'beetle@bug.org'
     }
 
     mocker.patch(
@@ -84,7 +84,7 @@ def test_kobo_fails(client, mocker):
         'kobo_username': 'beetlebub',
         'kobo_password': 'chitinisking',
         'kobo_uid': 'iguessthisisauid',
-        'email': 'beetle@bug.org'
+        'inaturalist_email': 'beetle@bug.org'
     }
 
     mocker.patch(
@@ -126,7 +126,7 @@ def test_bad_args(client):
         'kobo_username': 'beetlebub',
         'kobo_password': 'chitinisking',
         'kobo_uid': 'iguessthisisauid',
-        # email is missing
+        # inaturalist_email is missing
     }
 
     response = client.get('/submissions', json=payload)

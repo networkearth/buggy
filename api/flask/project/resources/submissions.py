@@ -3,9 +3,8 @@
 """
 
 from flask_restful import Resource, reqparse
-from gluon.kobo import client
 
-from ..transformers import transformers
+from ..submissions import submissions
 
 class Submissions(Resource):
     """
@@ -31,10 +30,10 @@ class Submissions(Resource):
         help='uid of Kobo project'
     )
     get_parser.add_argument(
-        'email',
+        'inaturalist_email',
         type=str,
         required=True,
-        help='email'
+        help='inaturalist email'
     )
 
     def get(self):
@@ -42,20 +41,5 @@ class Submissions(Resource):
         GET /submissions
         """
         kwargs = Submissions.get_parser.parse_args()
-        kobo = client.KoboClient(kwargs['kobo_username'], kwargs['kobo_password'])
-        email = kwargs['email'].strip()
-        data = kobo.pull_data(kwargs['kobo_uid'])
-        transformed_data = []
-        failed = 0
-        for entry in data:
-            try:
-                transformed = {}
-                for transformer in transformers.BUGGY_TRANSFORMERS:
-                    key, value = transformer(entry)
-                    transformed[key] = value
-                transformed_data.append(transformed)
-            # pylint: disable=broad-except
-            except Exception:
-                failed += 1
-        transformed_data = list(filter(lambda x: x['email'] == email, transformed_data))
-        return list(filter(lambda x: x['email'] == email, transformed_data)), 200
+        data = submissions.get_submissions(**kwargs)
+        return data, 200

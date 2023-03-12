@@ -2,12 +2,11 @@
 /job endpoint
 """
 
-import json
-from time import time
-import boto3
-
 from flask_restful import Resource, reqparse
 from flask import current_app
+
+from ..submissions import submissions
+from ..uploaders import uploaders
 
 class Job(Resource):
     """
@@ -68,52 +67,26 @@ class Job(Resource):
         POST /job
         """
         kwargs = Job.parser.parse_args()
-        key = f'{kwargs["inaturalist_email"]}-{int(time())}.json'
-        data = {
-            'instances': [
-                int(instance.strip())
-                for instance in kwargs['instances'].split(',')
-                if instance.strip()
-            ],
-            'inaturalist_email': kwargs['inaturalist_email'],
-            'inaturalist_password': kwargs['inaturalist_password'],
-            'client_id': kwargs['client_id'],
-            'client_secret': kwargs['client_secret'],
-            'kobo_username': kwargs['kobo_username'],
-            'kobo_password': kwargs['kobo_password'],
-            'kobo_uid': kwargs['kobo_uid']
-        }
 
-        # pylint: disable=invalid-name
-        s3 = boto3.client('s3')
-        s3.put_object(
-            Body=json.dumps(data, indent=4, sort_keys=True),
-            Bucket=current_app.config['JOB_BUCKET'],
-            Key=key
-        )
+        data = submissions.get_submissions(**kwargs)
 
-        email = kwargs['inaturalist_email']
-        batch = boto3.client('batch')
-        batch.submit_job(
-            # pylint: disable=line-too-long
-            jobQueue=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-queue/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
-            jobName='pushtoinat',
-            # pylint: disable=line-too-long
-            jobDefinition=f'arn:aws:batch:{current_app.config["REGION"]}:{current_app.config["ACCOUNT"]}:job-definition/{current_app.config["NAMESPACE"]}-{current_app.config["ENVIRONMENT"]}-push-to-inat',
-            containerOverrides={
-                'command': [
-                    '-e',
-                    email,
-                    '-b',
-                    current_app.config['JOB_BUCKET'],
-                    '-bb',
-                    current_app.config['BACKUP_BUCKET'],
-                    '-ia',
-                    current_app.config['INATURALIST_API'],
-                    '-iw',
-                    current_app.config['INATURALIST_WEBAPP']
-                ]
-            }
+        instances = [
+            int(instance.strip())
+            for instance in kwargs['instances'].split(',')
+            if instance.strip()
+        ]
+        data = [
+            submission for submission in data
+            if submission['instance'] in instances
+        ]
+
+        uploaders.upload_submissions(
+            data, current_app.config['BACKUP_PATH'],
+            kwargs['kobo_username'], kwargs['kobo_password'],
+            kwargs['kobo_uid'], kwargs['inaturalist_email'],
+            kwargs['inaturalist_password'], kwargs['client_id'],
+            kwargs['client_secret'], current_app.config['INATURALIST_API'],
+            current_app.config['INATURALIST_WEBAPP']
         )
 
         return {}, 201
