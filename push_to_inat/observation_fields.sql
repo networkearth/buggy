@@ -7,7 +7,9 @@ delete from observation_fields where id in (
     14016,
     12629,
     12552,
-    16032
+    16032,
+    15871,
+    15872
 );
 insert into observation_fields (
 	id,
@@ -67,6 +69,18 @@ values
 (
     16032,
     'EwA - Wet Host',
+    'text',
+    1
+),
+(
+    15871,
+    'EwA - Protocol',
+    'text',
+    1
+),
+(
+    15872,
+    'EwA - Reviewed',
     'text',
     1
 )
